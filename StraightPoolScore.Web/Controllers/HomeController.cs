@@ -10,7 +10,7 @@ namespace StraightPoolScore.Web.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            ViewBag.Message = "This will eventually be an awesome Straight Pool scoring app.";
 
             return View();
         }
