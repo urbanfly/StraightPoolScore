@@ -22,7 +22,7 @@ namespace StraightPoolScore.Web.Tests.Controllers
             ViewResult result = controller.Index() as ViewResult;
 
             // Assert
-            Assert.AreEqual("This will eventually be an awesome Straight Pool scoring app.", result.ViewBag.Message);
+            Assert.AreEqual("This will eventually be an awesome Straight Pool scoring app...", result.ViewBag.Message);
         }
 
         [TestMethod]

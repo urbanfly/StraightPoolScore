@@ -10,7 +10,7 @@ namespace StraightPoolScore.Web.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "This will eventually be an awesome Straight Pool scoring app.";
+            ViewBag.Message = "This will eventually be an awesome Straight Pool scoring app...";
 
             return View();
         }
