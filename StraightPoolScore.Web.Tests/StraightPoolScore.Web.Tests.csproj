@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="StraightPool Sample.linq" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StraightPoolScore.Web\StraightPoolScore.Web.csproj">
