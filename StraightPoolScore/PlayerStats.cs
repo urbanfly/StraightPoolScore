@@ -10,7 +10,6 @@ namespace StraightPoolScore
 {
     public class PlayerStats
     {
-        private int _numberOfInnings;
         private readonly LinkedList<Turn> _turns;
         private readonly string _playerId;
         private readonly IEnumerable<Turn> _playerTurns;
