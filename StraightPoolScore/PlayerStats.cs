@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Reactive.PlatformServices;
 
 namespace StraightPoolScore
 {
@@ -39,10 +42,16 @@ namespace StraightPoolScore
 
         public int Score { get { return NumberOfBallsMade - NumberOfFouls + Handicap; } }
 
-        private IEnumerable<int> BallsBetweenErrors 
+        public IEnumerable<int> BallsBetweenErrors 
         { 
             get 
             {
+                //var turns = _turns.ToObservable();
+                //return turns.Window(turns.Where(IsError))
+                //    .ObserveOn(ThreadPoolScheduler.Instance)
+                //    .Select(ts => ts.Where(t=>t.PlayerId == _playerId).Sum(t => t.BallsMade).Wait())
+                //    .ToEnumerable();
+
                 var count = 0;
                 bool waitingForEndOfInning = false;
                 foreach (var turn in _turns.SkipWhile(t => t.PlayerId != _playerId))
@@ -76,5 +85,11 @@ namespace StraightPoolScore
                     yield return count;
             }
         }
+
+        //private bool IsError(Turn turn)
+        //{
+        //    return (turn.PlayerId == _playerId && turn.Ending != EndingType.Safety) 
+        //        || (turn.PlayerId != _playerId && turn.BallsMade > 0);
+        //}
     }
 }
