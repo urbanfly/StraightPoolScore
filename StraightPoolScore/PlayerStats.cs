@@ -1,49 +1,53 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
-namespace StraightPoolScore.Web.Models
+namespace StraightPoolScore
 {
     public class PlayerStats
     {
+        private int _numberOfInnings;
         private readonly LinkedList<Turn> _turns;
-        private readonly string _player;
+        private readonly string _playerId;
         private readonly IEnumerable<Turn> _playerTurns;
-        private readonly int _handicap;
         
         /// <summary>
         /// Initializes a new instance of the PlayerStats class.
         /// </summary>
         public PlayerStats(LinkedList<Turn> turns, Player player)
         {
-            _handicap = player.Handicap;
-            _player = player.Id;
+            Handicap = player.Handicap;
+            _playerId = player.Id;
             _turns = turns;
-            _playerTurns = _turns.Where(t => t.Player == _player);
+            _playerTurns = _turns.Where(t => t.PlayerId == _playerId);
         }
+
+        public int Handicap { get; set; }
 
         public int NumberOfSafeties { get { return _playerTurns.Count(t => t.Ending == EndingType.Safety); } }
         public int NumberOfFouls { get { return _playerTurns.Count(t => t.Ending == EndingType.Foul); } }
         public int NumberOfMisses { get { return _playerTurns.Count(t => t.Ending == EndingType.Miss); } }
         public int NumberOfBallsMade { get { return _playerTurns.Sum(t => t.BallsMade); } }
-        
+        public int NumberOfInnings { get { return _playerTurns.Count(); } }
+                
         public int HighRun { get { return _playerTurns.Select(t => t.BallsMade).DefaultIfEmpty().Max(); } }
-        public double BallsPerInning { get { return _playerTurns.Select(t => t.BallsMade).DefaultIfEmpty().Average(); } }
+        public double AverageBallsPerInning { get { return _playerTurns.Select(t => t.BallsMade).DefaultIfEmpty().Average(); } }
 
         public double HighRunWithSafeties { get { return BallsBetweenErrors.DefaultIfEmpty().Max(); } }
         public double AverageBallsBetweenErrors { get { return BallsBetweenErrors.DefaultIfEmpty().Average(); } }
 
-        public int Score { get { return NumberOfBallsMade - NumberOfFouls + _handicap; } }
+        public int Score { get { return NumberOfBallsMade - NumberOfFouls + Handicap; } }
 
-        public IEnumerable<int> BallsBetweenErrors 
+        private IEnumerable<int> BallsBetweenErrors 
         { 
             get 
             {
                 var count = 0;
                 bool waitingForEndOfInning = false;
-                foreach (var turn in _turns.SkipWhile(t => t.Player != _player))
+                foreach (var turn in _turns.SkipWhile(t => t.PlayerId != _playerId))
                 {
-                    if (turn.Player == _player)
+                    if (turn.PlayerId == _playerId)
                     {
                         count += turn.BallsMade;
                         if (turn.Ending == EndingType.Safety)
@@ -52,15 +56,16 @@ namespace StraightPoolScore.Web.Models
                         }
                         else
                         {
+                            waitingForEndOfInning = false;
                             yield return count;
                             count = 0;
                         }
                     }
                     else
                     {
-                        waitingForEndOfInning = false;
-                        if (turn.BallsMade > 0 && count > 0) // opponent made any balls
+                        if (waitingForEndOfInning && turn.BallsMade > 0) // opponent made any balls
                         {
+                            waitingForEndOfInning = false;
                             yield return count;
                             count = 0;
                         }

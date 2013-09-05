@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StraightPoolScore.Web.Models
+namespace StraightPoolScore
 {
     public static class Extensions
     {
