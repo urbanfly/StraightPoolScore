@@ -23,24 +23,7 @@ namespace StraightPoolScore
 
         public Player Player1 { get; set; }
         public Player Player2 { get; set; }
-        public Player CurrentPlayer { get; set; }
 
         public LinkedList<Turn> Turns { get; set; }
-
-        //public void EndTurn(int ballsRemaining, EndingType ending)
-        //{
-        //    var lastTurn = Turns.Last;
-        //    var lastPlayer = lastTurn == null ? null : lastTurn.Value.Player;
-
-        //    var currentPlayer = lastPlayer == Player1.Id ? Player2 : Player1;
-        //    var ballsAtStartOfTurn = Turns.Sum(t=>t.BallsMade) % 15;
-
-        //    Turns.AddLast(new Turn(currentPlayer.Id, ending, ballsAtStartOfTurn - ballsRemaining));
-        //}
-
-        //public void NewRack()
-        //{
-        //    
-        //}
     }
 }

@@ -8,6 +8,8 @@ namespace StraightPoolScore
     {
         Miss,
         Foul,
-        Safety
+        Safety,
+        NewRack,
+        Win
     }
 }

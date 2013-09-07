@@ -32,7 +32,7 @@ namespace StraightPoolScore
         public int NumberOfMisses { get { return _playerTurns.Count(t => t.Ending == EndingType.Miss); } }
         public int NumberOfBallsMade { get { return _playerTurns.Sum(t => t.BallsMade); } }
         public int NumberOfInnings { get { return _playerTurns.Count(); } }
-                
+
         public int HighRun { get { return _playerTurns.Select(t => t.BallsMade).DefaultIfEmpty().Max(); } }
         public double AverageBallsPerInning { get { return _playerTurns.Select(t => t.BallsMade).DefaultIfEmpty().Average(); } }
 
@@ -41,16 +41,10 @@ namespace StraightPoolScore
 
         public int Score { get { return NumberOfBallsMade - NumberOfFouls + Handicap; } }
 
-        public IEnumerable<int> BallsBetweenErrors 
+        private IEnumerable<int> BallsBetweenErrors 
         { 
             get 
             {
-                //var turns = _turns.ToObservable();
-                //return turns.Window(turns.Where(IsError))
-                //    .ObserveOn(ThreadPoolScheduler.Instance)
-                //    .Select(ts => ts.Where(t=>t.PlayerId == _playerId).Sum(t => t.BallsMade).Wait())
-                //    .ToEnumerable();
-
                 var count = 0;
                 bool waitingForEndOfInning = false;
                 foreach (var turn in _turns.SkipWhile(t => t.PlayerId != _playerId))
@@ -84,11 +78,5 @@ namespace StraightPoolScore
                     yield return count;
             }
         }
-
-        //private bool IsError(Turn turn)
-        //{
-        //    return (turn.PlayerId == _playerId && turn.Ending != EndingType.Safety) 
-        //        || (turn.PlayerId != _playerId && turn.BallsMade > 0);
-        //}
     }
 }
