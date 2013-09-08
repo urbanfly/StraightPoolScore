@@ -10,6 +10,7 @@ namespace StraightPoolScore
         Foul,
         Safety,
         NewRack,
-        Win
+        Win,
+        BreakingFoul
     }
 }

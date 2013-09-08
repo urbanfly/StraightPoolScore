@@ -6,9 +6,101 @@ namespace StraightPoolScore
 {
     public class Player : IEquatable<Player>
     {
+        /// <summary>
+        /// Initializes a new instance of the Player class.
+        /// </summary>
+        public Player(string id, string name, int handicap)
+        {
+            Id = id;
+            Name = name;
+            Handicap = handicap;
+            
+            Score = handicap;
+            ConsecutiveFouls = 0;
+            TotalSafeties = 0;
+            TotalFouls = 0;
+            TotalMisses = 0;
+            TotalBallsMade = 0;
+            HighRun = 0;
+            //HighRunWithSafeties = 0;
+            AverageBallsPerInning = 0d;
+            //AverageBallsBetweenErrors = 0d;
+        }
+
         public string Id { get; set; }
         public string Name { get; set; }
         public int Handicap { get; set; }
+
+        public int Score { get; set; }
+        public int ConsecutiveFouls { get; set; }
+        public int TotalSafeties { get; set; }
+        public int TotalFouls { get; set; }
+        public int TotalMisses { get; set; }
+        public int TotalBallsMade { get; set; }
+        public int HighRun { get; set; }
+        //public int HighRunWithSafeties { get; set; }
+        public double AverageBallsPerInning { get; set; }
+        //public double AverageBallsBetweenErrors { get; set; }
+
+        public Turn UpdateStats(StraightPoolGame game, int ballsMade, EndingType ending)
+        {
+            TotalBallsMade += ballsMade;
+            Score += ballsMade;
+            
+            if (ballsMade > 0)
+            {
+                ConsecutiveFouls = 0;
+            }
+            
+            switch (ending)
+            {
+                case EndingType.BreakingFoul:
+                    Score -= 2;
+                    TotalFouls++;
+                    break;
+                case EndingType.Foul:
+                    TotalFouls++;
+                    ConsecutiveFouls++;
+                    Score--;
+                    if (ConsecutiveFouls == 3)
+                    {
+                        Score -= 15;
+                        ConsecutiveFouls = 0;
+                        game.UseOpeningBreakRules = true;
+                    }
+                    break;
+                case EndingType.Miss:
+                    TotalMisses += 1;
+                    break;
+                case EndingType.Safety:
+                    TotalSafeties += 1;
+                    break;
+            }
+
+            if (Score >= game.Limit)
+            {
+                ending = EndingType.Win;
+            }
+
+            // if the last turn was mine, combine turns
+            var turn = game.Turns.Last == null ? null : game.Turns.Last.Value;
+            if (turn != null && turn.PlayerId == Id)
+            {
+                turn.Ending = ending;
+                turn.BallsMade += ballsMade;
+            }
+            else
+            {
+                turn = new Turn(Id, ballsMade, ending);
+            }
+
+            if (ending != EndingType.NewRack)
+            {
+                HighRun = Math.Max(HighRun, turn.BallsMade);
+            }
+
+            return turn;
+        }
 
         public override bool Equals(object obj)
         {

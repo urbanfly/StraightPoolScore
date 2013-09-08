@@ -15,6 +15,9 @@ namespace StraightPoolScore
             Player1 = player1;
             Player2 = player2;
             Limit = limit;
+            BallsRemaining = 15;
+            UseOpeningBreakRules = true;
+            CurrentPlayerId = player1.Id;
         }
 
         public string Id { get; set; }
@@ -25,5 +28,47 @@ namespace StraightPoolScore
         public Player Player2 { get; set; }
 
         public LinkedList<Turn> Turns { get; set; }
+
+        public int BallsRemaining { get; set; }
+        public bool UseOpeningBreakRules { get; set; }
+        public int NumberOfInnings { get; set; }
+
+        public string CurrentPlayerId { get; set; }
+        public Player GetCurrentPlayer()
+        {
+            return CurrentPlayerId == Player1.Id ? Player1 : Player2;
+        }
+
+        public void NextPlayer()
+        {
+            CurrentPlayerId = CurrentPlayerId == Player1.Id ? Player2.Id : Player1.Id;
+        }
+
+        public bool PlayerCanPass { get; set; }
+
+        public Turn EndTurn(int ballsRemaining, EndingType ending)
+        {
+            int ballsMade = BallsRemaining - ballsRemaining;
+            BallsRemaining -= ballsMade;
+            if (BallsRemaining <= 1)
+            {
+                BallsRemaining = 15; // new rack
+            }
+
+            var currentPlayer = GetCurrentPlayer();
+            var turn = currentPlayer.UpdateStats(this, ballsMade, ending);
+
+            // only add the turn if it's not a continuation of the previous 'NewRack' turn
+            if (Turns.Last == null || Turns.Last.Value != turn)
+                Turns.AddLast(turn);
+
+            // only switch players if this wasn't a 'NewRack'
+            if (ending != EndingType.NewRack)
+                NextPlayer();
+
+            PlayerCanPass = (ending == EndingType.BreakingFoul);
+
+            return turn;
+        }
     }
 }
