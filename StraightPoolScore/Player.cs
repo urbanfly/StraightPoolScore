@@ -9,9 +9,8 @@ namespace StraightPoolScore
         /// <summary>
         /// Initializes a new instance of the Player class.
         /// </summary>
-        public Player(string id, string name, int handicap)
+        public Player(string name, int handicap = 0)
         {
-            Id = id;
             Name = name;
             Handicap = handicap;
             

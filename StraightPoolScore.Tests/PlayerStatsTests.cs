@@ -11,8 +11,8 @@ namespace StraightPoolScore.Tests
         [TestMethod]
         public void Game1()
         {
-            var p1 = new Player("Players/1", "Robert", 0);
-            var p2 = new Player("Players/2", "Jack", 10);
+            var p1 = new Player("Robert", 0) { Id = "Players/1" };
+            var p2 = new Player("Jack", 10) { Id = "Players/2" };
             var game = new StraightPoolGame(p1, p2, 80);
             var game2 = new StraightPoolGame(p1, p2, 80);
 
@@ -88,8 +88,8 @@ namespace StraightPoolScore.Tests
         [TestMethod]
         public void Game2()
         {
-            var p1 = new Player("Players/1", "Robert", 0);
-            var p2 = new Player("Players/2", "Jack", 10);
+            var p1 = new Player("Robert", 0) { Id = "Players/1" };
+            var p2 = new Player("Jack", 10) { Id = "Players/2" };
             var game = new StraightPoolGame(p1, p2, 80);
 
             game.Turns.AddLast(new Turn(p1.Id, 7, EndingType.Safety));
@@ -107,8 +107,8 @@ namespace StraightPoolScore.Tests
         [TestMethod]
         public void NewRack()
         {
-            var p1 = new Player("Players/1", "Robert", 0);
-            var p2 = new Player("Players/2", "Jack", 10);
+            var p1 = new Player("Robert", 0) { Id = "Players/1" };
+            var p2 = new Player("Jack", 10) { Id = "Players/2" };
             var game = new StraightPoolGame(p1, p2, 80);
 
             game.EndTurn(1, EndingType.NewRack);
@@ -120,57 +120,6 @@ namespace StraightPoolScore.Tests
             Assert.AreEqual(28, stats1.NumberOfBallsMade);
             Assert.AreEqual(0, stats2.NumberOfBallsMade);
             Assert.AreEqual(1, stats1.NumberOfInnings);
-        }
-    }
-
-    [TestClass]
-    public class StraightPoolGameTests
-    {
-        [TestMethod]
-        public void CurrentPlayerStartsWithPlayer1()
-        {
-            var p1 = new Player("a", "A", 0);
-            var p2 = new Player("b", "B", 0);
-
-            var game = new StraightPoolGame(p1, p2, 100);
-
-            Assert.AreEqual(p1.Id, game.CurrentPlayerId);
-        }
-
-        [TestMethod]
-        public void ConsecutiveFouls()
-        {
-            var p1 = new Player("a", "A", 0);
-            var p2 = new Player("b", "B", 0);
-
-            var game = new StraightPoolGame(p1, p2, 100);
-
-            game.EndTurn(15, EndingType.Foul);
-            game.EndTurn(15, EndingType.Safety);
-            game.EndTurn(15, EndingType.Foul);
-            game.EndTurn(15, EndingType.Safety);
-            game.EndTurn(15, EndingType.Foul);
-
-            Assert.AreEqual(-18, p1.Score);
-            Assert.AreEqual(0, p1.ConsecutiveFouls);
-            Assert.AreEqual(p1.Id, game.CurrentPlayerId);
-        }
-
-        [TestMethod]
-        public void BreakingFouls()
-        {
-            var p1 = new Player("a", "A", 0);
-            var p2 = new Player("b", "B", 0);
-
-            var game = new StraightPoolGame(p1, p2, 100);
-
-            game.EndTurn(15, EndingType.BreakingFoul);
-            game.NextPlayer(); // p2 decides to return play to P1 to rebreak
-            game.EndTurn(15, EndingType.BreakingFoul);
-            game.EndTurn(1, EndingType.Miss);
-
-            Assert.AreEqual(p1.Score, -4);
-            Assert.AreEqual(p2.Score, 14);
         }
     }
 }
