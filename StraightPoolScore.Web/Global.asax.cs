@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Raven.Client.Document;
+using Raven.Client.Embedded;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,6 +16,8 @@ namespace StraightPoolScore.Web
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static DocumentStore Store { get; set; }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -22,6 +26,12 @@ namespace StraightPoolScore.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            Store = new EmbeddableDocumentStore
+            {
+                ConnectionStringName = "RavenDB",
+            };
+            Store.Initialize();
         }
     }
 }
