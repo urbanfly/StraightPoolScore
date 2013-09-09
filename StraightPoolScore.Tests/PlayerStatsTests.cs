@@ -21,7 +21,7 @@ namespace StraightPoolScore.Tests
             game2.Turns.AddLast(new Turn(p1.Id, 9, EndingType.Foul));
             game2.Turns.AddLast(new Turn(p2.Id, 5, EndingType.Foul));
             game2.Turns.AddLast(new Turn(p1.Id, 3, EndingType.Safety));
-            game2.Turns.AddLast(new Turn(p2.Id, 14, EndingType.Foul));
+            game2.Turns.AddLast(new Turn(p2.Id, 14, EndingType.Miss));
             game2.Turns.AddLast(new Turn(p1.Id, 13, EndingType.Safety));
             game2.Turns.AddLast(new Turn(p2.Id, 9, EndingType.Foul));
             game2.Turns.AddLast(new Turn(p1.Id, 1, EndingType.Miss));
@@ -48,7 +48,7 @@ namespace StraightPoolScore.Tests
             game.EndTurn(14, EndingType.Safety);
             //---14
             game.EndTurn(1, EndingType.NewRack);
-            game.EndTurn(14, EndingType.Foul);
+            game.EndTurn(14, EndingType.Miss);
             //---13
             game.EndTurn(1, EndingType.NewRack);
             game.EndTurn(15, EndingType.Safety);
@@ -138,6 +138,25 @@ namespace StraightPoolScore.Tests
         }
 
         [TestMethod]
+        public void ConsecutiveFouls()
+        {
+            var p1 = new Player("a", "A", 0);
+            var p2 = new Player("b", "B", 0);
+
+            var game = new StraightPoolGame(p1, p2, 100);
+
+            game.EndTurn(15, EndingType.Foul);
+            game.EndTurn(15, EndingType.Safety);
+            game.EndTurn(15, EndingType.Foul);
+            game.EndTurn(15, EndingType.Safety);
+            game.EndTurn(15, EndingType.Foul);
+
+            Assert.AreEqual(-18, p1.Score);
+            Assert.AreEqual(0, p1.ConsecutiveFouls);
+            Assert.AreEqual(p1.Id, game.CurrentPlayerId);
+        }
+
+        [TestMethod]
         public void BreakingFouls()
         {
             var p1 = new Player("a", "A", 0);
@@ -146,7 +165,7 @@ namespace StraightPoolScore.Tests
             var game = new StraightPoolGame(p1, p2, 100);
 
             game.EndTurn(15, EndingType.BreakingFoul);
-            game.NextPlayer();
+            game.NextPlayer(); // p2 decides to return play to P1 to rebreak
             game.EndTurn(15, EndingType.BreakingFoul);
             game.EndTurn(1, EndingType.Miss);
 

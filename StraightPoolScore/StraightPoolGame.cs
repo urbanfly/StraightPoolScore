@@ -16,7 +16,6 @@ namespace StraightPoolScore
             Player2 = player2;
             Limit = limit;
             BallsRemaining = 15;
-            UseOpeningBreakRules = true;
             CurrentPlayerId = player1.Id;
         }
 
@@ -30,7 +29,6 @@ namespace StraightPoolScore
         public LinkedList<Turn> Turns { get; set; }
 
         public int BallsRemaining { get; set; }
-        public bool UseOpeningBreakRules { get; set; }
         public int NumberOfInnings { get; set; }
 
         public string CurrentPlayerId { get; set; }
@@ -43,8 +41,6 @@ namespace StraightPoolScore
         {
             CurrentPlayerId = CurrentPlayerId == Player1.Id ? Player2.Id : Player1.Id;
         }
-
-        public bool PlayerCanPass { get; set; }
 
         public Turn EndTurn(int ballsRemaining, EndingType ending)
         {
@@ -62,11 +58,9 @@ namespace StraightPoolScore
             if (Turns.Last == null || Turns.Last.Value != turn)
                 Turns.AddLast(turn);
 
-            // only switch players if this wasn't a 'NewRack'
-            if (ending != EndingType.NewRack)
+            // only switch players if this wasn't a 'NewRack' or a 3-foul
+            if (ending != EndingType.NewRack && turn.Ending != EndingType.ThreeConsecutiveFouls)
                 NextPlayer();
-
-            PlayerCanPass = (ending == EndingType.BreakingFoul);
 
             return turn;
         }

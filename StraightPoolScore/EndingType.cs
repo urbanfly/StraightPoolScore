@@ -11,6 +11,7 @@ namespace StraightPoolScore
         Safety,
         NewRack,
         Win,
-        BreakingFoul
+        BreakingFoul,
+        ThreeConsecutiveFouls
     }
 }

@@ -47,7 +47,7 @@ namespace StraightPoolScore
             TotalBallsMade += ballsMade;
             Score += ballsMade;
             
-            if (ballsMade > 0)
+            if (ballsMade > 0 || ending != EndingType.Foul)
             {
                 ConsecutiveFouls = 0;
             }
@@ -66,7 +66,7 @@ namespace StraightPoolScore
                     {
                         Score -= 15;
                         ConsecutiveFouls = 0;
-                        game.UseOpeningBreakRules = true;
+                        ending = EndingType.ThreeConsecutiveFouls;
                     }
                     break;
                 case EndingType.Miss:
@@ -82,7 +82,7 @@ namespace StraightPoolScore
                 ending = EndingType.Win;
             }
 
-            // if the last turn was mine, combine turns
+            // if the last turn was by the same user, combine turns
             var turn = game.Turns.Last == null ? null : game.Turns.Last.Value;
             if (turn != null && turn.PlayerId == Id)
             {
@@ -124,9 +124,9 @@ namespace StraightPoolScore
 
         public bool Equals(Player other)
         {
-            return this.Id == other.Id
-                && this.Name == other.Name
-                && this.Handicap == other.Handicap;
+            return Id == other.Id
+                && Name == other.Name
+                && Handicap == other.Handicap;
         }
     }
 }
