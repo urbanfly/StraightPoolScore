@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<StraightPoolScore.StraightPoolGame>
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -13,7 +13,12 @@
 </head>
 <body>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create New", "Create") | 
+        @if (StraightPoolScore.Web.MvcApplication.IsDebug) {
+            <a href="http://localhost:8080/raven/studio.html" target="_blank">Raven Studio</a>
+        } else {
+            <a href="https://ibis.ravenhq.com/raven/studio.html#/home?api-key=ab4d08c6-3286-4778-a94e-3b3895aeb925&database=AppHarbor_979410e3-b382-4991-b710-84af96219fb0" target="_blank">Raven Studio</a>
+        }
     </p>
     <table>
         <tr>

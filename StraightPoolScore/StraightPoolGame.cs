@@ -19,7 +19,7 @@ namespace StraightPoolScore
             CurrentPlayerId = player1.Id;
         }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public int Limit { get; set; }
 

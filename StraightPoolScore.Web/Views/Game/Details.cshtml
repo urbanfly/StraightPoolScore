@@ -1,0 +1,44 @@
+﻿@model StraightPoolScore.StraightPoolGame
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>StraightPoolGame</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Limit)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Limit)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.BallsRemaining)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.BallsRemaining)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.NumberOfInnings)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.NumberOfInnings)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CurrentPlayerId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CurrentPlayerId)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

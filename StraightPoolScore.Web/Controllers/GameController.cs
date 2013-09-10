@@ -31,7 +31,8 @@ namespace StraightPoolScore.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            return View();
+            var game = RavenSession.Load<StraightPoolGame>(id);
+            return View(game);
         }
 
         //
@@ -72,7 +73,8 @@ namespace StraightPoolScore.Web.Controllers
 
         public ActionResult Edit(int id)
         {
-            return View();
+            var game = RavenSession.Load<StraightPoolGame>(id);
+            return View(game);
         }
 
         //
@@ -98,7 +100,8 @@ namespace StraightPoolScore.Web.Controllers
 
         public ActionResult Delete(int id)
         {
-            return View();
+            var game = RavenSession.Load<StraightPoolGame>(id);
+            return View(game);
         }
 
         //
@@ -109,7 +112,8 @@ namespace StraightPoolScore.Web.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                var game = RavenSession.Load<StraightPoolGame>(id);
+                RavenSession.Delete(game);
 
                 return RedirectToAction("Index");
             }

@@ -2,6 +2,7 @@
 using Raven.Client.Embedded;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -27,11 +28,32 @@ namespace StraightPoolScore.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            Store = new EmbeddableDocumentStore
+            var eStore = new EmbeddableDocumentStore
             {
                 ConnectionStringName = "RavenDB",
             };
-            Store.Initialize();
+            if (IsDebug)
+            {
+                eStore.UseEmbeddedHttpServer = true;
+            }
+            eStore.Initialize();
+            Store = eStore;
+        }
+
+        public static string Environment
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["Environment"];
+            }
+        }
+
+        public static bool IsDebug
+        {
+            get
+            {
+                return Environment == "Debug";
+            }
         }
     }
 }

@@ -1,0 +1,63 @@
+﻿@model StraightPoolScore.StraightPoolGame
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>StraightPoolGame</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Limit)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Limit)
+            @Html.ValidationMessageFor(model => model.Limit)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BallsRemaining)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.BallsRemaining)
+            @Html.ValidationMessageFor(model => model.BallsRemaining)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NumberOfInnings)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NumberOfInnings)
+            @Html.ValidationMessageFor(model => model.NumberOfInnings)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CurrentPlayerId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CurrentPlayerId)
+            @Html.ValidationMessageFor(model => model.CurrentPlayerId)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
