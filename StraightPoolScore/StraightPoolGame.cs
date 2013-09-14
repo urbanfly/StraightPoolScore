@@ -59,8 +59,18 @@ namespace StraightPoolScore
                 Turns.AddLast(turn);
 
             // only switch players if this wasn't a 'NewRack' or a 3-foul
-            if (ending != EndingType.NewRack && turn.Ending != EndingType.ThreeConsecutiveFouls)
-                NextPlayer();
+            switch (turn.Ending)
+            {
+                case EndingType.Miss:
+                case EndingType.Foul:
+                case EndingType.Safety:
+                case EndingType.BreakingFoul:
+                    NextPlayer();                                        
+                    break;
+                case EndingType.ThreeConsecutiveFouls:
+                    BallsRemaining = 15;
+                    break;
+            }
 
             return turn;
         }

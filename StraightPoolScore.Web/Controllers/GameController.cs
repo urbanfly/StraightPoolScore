@@ -78,21 +78,16 @@ namespace StraightPoolScore.Web.Controllers
         }
 
         //
-        // POST: /Game/Edit/5
+        // POST: /Game/EndTurn/5
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult EndTurn(int id, int ballsRemaining, EndingType ending)
         {
-            try
-            {
-                // TODO: Add update logic here
+            var game = RavenSession.Load<StraightPoolGame>(id);
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            game.EndTurn(ballsRemaining, ending);
+
+            return RedirectToAction("Edit", new { id });
         }
 
         //

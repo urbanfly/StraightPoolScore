@@ -32,6 +32,7 @@ namespace StraightPoolScore.Web
             {
                 ConnectionStringName = "RavenDB",
             };
+            eStore.Conventions.DefaultQueryingConsistency = ConsistencyOptions.AlwaysWaitForNonStaleResultsAsOfLastWrite;
             if (IsDebug)
             {
                 eStore.UseEmbeddedHttpServer = true;

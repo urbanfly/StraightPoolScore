@@ -7,10 +7,54 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("EndTurn", "Game", new { id = Model.Id })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
+    <table>
+        <tr>
+            @if (Model.CurrentPlayerId == Model.Player1.Id) {
+                <td style="font-weight:bold">@Model.Player1.Name</td>
+            } else {
+                <td>@Model.Player1.Name</td>
+            }
+            <td rowspan="2">
+                Race to @(Model.Limit).<br />
+                @(Model.BallsRemaining) balls remaining.
+            </td>
+            @if (Model.CurrentPlayerId == Model.Player2.Id) {
+                <td style="font-weight:bold">@Model.Player2.Name</td>
+            } else {
+                <td>@Model.Player2.Name</td>
+            }
+        </tr>
+        <tr>
+            <td>@Model.Player1.Score</td>
+            <td>@Model.Player2.Score</td>
+        </tr>
+        <tr>
+            <td>@Model.Player1.AverageBallsPerInning</td>
+            <td rowspan="2">
+                @Html.EditorFor(model => model.BallsRemaining)
+                <br />
+                <input type="submit" name="ending" value="Foul" />
+                <input type="submit" name="ending" value="Miss" />
+                <input type="submit" name="ending" value="Safety" />
+                <input type="submit" name="ending" value="NewRack" />
+            </td>
+            <td>@Model.Player2.AverageBallsPerInning</td>
+        </tr>
+        <tr>
+            <td>@Model.Player1.HighRun</td>
+            <td>@Model.Player2.HighRun</td>
+        </tr>
+    </table>
+}
+
+@*@using (Html.BeginForm("EndTurn", "Game")) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    
     <fieldset>
         <legend>StraightPoolGame</legend>
 
@@ -52,7 +96,7 @@
             <input type="submit" value="Save" />
         </p>
     </fieldset>
-}
+}*@
 
 <div>
     @Html.ActionLink("Back to List", "Index")
