@@ -39,6 +39,13 @@ namespace StraightPoolScore.Web
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+            bundles.Add(new StyleBundle("~/Content/mobiscroll").Include(
+                "~/Content/mobiscroll*"));
+
+            bundles.Add(new ScriptBundle("~/bundles/mobiscroll").Include(
+                "~/Scripts/mobiscroll.core-2.7.2.js",
+                "~/Scripts/mobiscroll*"));
         }
     }
 }

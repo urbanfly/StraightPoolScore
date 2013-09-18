@@ -5,13 +5,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+@Styles.Render("~/Content/mobiscroll")
+
+<style>
+    #score-row td {
+        font-size:xx-large;
+        border-radius:10px;
+        background: lightblue;
+    }
+</style>
 
 @using (Html.BeginForm("EndTurn", "Game", new { id = Model.Id })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <table>
+    <table border="1" style="text-align:center">
         <tr>
             @if (Model.CurrentPlayerId == Model.Player1.Id) {
                 <td style="font-weight:bold">@Model.Player1.Name</td>
@@ -19,8 +27,8 @@
                 <td>@Model.Player1.Name</td>
             }
             <td rowspan="2">
-                Race to @(Model.Limit).<br />
-                @(Model.BallsRemaining) balls remaining.
+                Race to @(Model.Limit)<br />
+                @(Model.BallsRemaining) balls remaining
             </td>
             @if (Model.CurrentPlayerId == Model.Player2.Id) {
                 <td style="font-weight:bold">@Model.Player2.Name</td>
@@ -28,75 +36,45 @@
                 <td>@Model.Player2.Name</td>
             }
         </tr>
-        <tr>
+        <tr id="score-row">
             <td>@Model.Player1.Score</td>
             <td>@Model.Player2.Score</td>
         </tr>
         <tr>
             <td>@Model.Player1.AverageBallsPerInning</td>
-            <td rowspan="2">
-                @Html.EditorFor(model => model.BallsRemaining)
-                <br />
-                <input type="submit" name="ending" value="Foul" />
-                <input type="submit" name="ending" value="Miss" />
-                <input type="submit" name="ending" value="Safety" />
-                <input type="submit" name="ending" value="NewRack" />
-            </td>
+            <td>BPI</td>
             <td>@Model.Player2.AverageBallsPerInning</td>
         </tr>
         <tr>
             <td>@Model.Player1.HighRun</td>
+            <td>High Run</td>
             <td>@Model.Player2.HighRun</td>
+        </tr>
+        <tr>
+            <td>@Model.Player1.TotalFouls</td>
+            <td>Total Fouls</td>
+            <td>@Model.Player2.TotalFouls</td>
+        </tr>
+        <tr>
+            <td>@Model.Player1.TotalSafeties</td>
+            <td>Total Safeties</td>
+            <td>@Model.Player2.TotalSafeties</td>
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                @Html.EditorFor(model => model.BallsRemaining, "Mobiscroll")
+                <br />
+                <input type="submit" name="ending" value="Foul" />
+@*                <input type="submit" name="ending" value="Breaking Foul" /> only when using opening break rules *@
+                <input type="submit" name="ending" value="Miss" />
+                <input type="submit" name="ending" value="Safety" />
+@*                <input type="submit" name="ending" value="NewRack" />*@
+@*                <input type="submit" name="ending" value="Re-break" /> only after a "breaking foul" *@
+            </td>
         </tr>
     </table>
 }
-
-@*@using (Html.BeginForm("EndTurn", "Game")) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    
-    <fieldset>
-        <legend>StraightPoolGame</legend>
-
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Limit)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Limit)
-            @Html.ValidationMessageFor(model => model.Limit)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.BallsRemaining)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.BallsRemaining)
-            @Html.ValidationMessageFor(model => model.BallsRemaining)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.NumberOfInnings)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.NumberOfInnings)
-            @Html.ValidationMessageFor(model => model.NumberOfInnings)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CurrentPlayerId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CurrentPlayerId)
-            @Html.ValidationMessageFor(model => model.CurrentPlayerId)
-        </div>
-
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
-}*@
 
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -104,4 +82,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/mobiscroll")
+    <script type="text/javascript">
+        $(document).on('pageinit', null, function () {
+            $(".mobiscroll").mobiscroll().select({ display: "inline", theme: "android-ics" });
+        });
+    </script>
 }

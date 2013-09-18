@@ -194,6 +194,16 @@
     <Content Include="Content\jquery.mobile.structure-1.2.0.min.css" />
     <Content Include="Content\jquery.mobile.theme-1.2.0.css" />
     <Content Include="Content\jquery.mobile.theme-1.2.0.min.css" />
+    <Content Include="Content\mobiscroll-2.7.2.full.min.css" />
+    <Content Include="Content\mobiscroll.android-2.7.2.css" />
+    <Content Include="Content\mobiscroll.android-ics-2.7.2.css" />
+    <Content Include="Content\mobiscroll.animation-2.7.2.css" />
+    <Content Include="Content\mobiscroll.core-2.7.2.css" />
+    <Content Include="Content\mobiscroll.ios-2.7.2.css" />
+    <Content Include="Content\mobiscroll.ios7-2.7.2.css" />
+    <Content Include="Content\mobiscroll.jqm-2.7.2.css" />
+    <Content Include="Content\mobiscroll.sense-ui-2.7.2.css" />
+    <Content Include="Content\mobiscroll.wp-2.7.2.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -248,6 +258,8 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\wp_icons.png" />
+    <Content Include="Content\wp_icons_light.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
@@ -264,6 +276,31 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\mobiscroll-2.7.2.full.min.js" />
+    <Content Include="Scripts\mobiscroll.android-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.android-ics-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-de.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-es.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-fr.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-hu.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-it.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-ja.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-nl.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-no.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-pt-BR.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-pt-PT.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-sv.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-tr.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2-zh.js" />
+    <Content Include="Scripts\mobiscroll.core-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.datetime-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.ios-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.ios7-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.jqm-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.jqmwidget-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.list-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.select-2.7.2.js" />
+    <Content Include="Scripts\mobiscroll.wp-2.7.2.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -292,6 +329,7 @@
     <Content Include="Views\Game\Details.cshtml" />
     <Content Include="Views\Game\Edit.cshtml" />
     <Content Include="Views\Game\Delete.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Mobiscroll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
