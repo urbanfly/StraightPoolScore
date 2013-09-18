@@ -26,13 +26,10 @@
                 @Html.DisplayNameFor(model => model.Limit)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BallsRemaining)
+                Player 1
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumberOfInnings)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CurrentPlayerId)
+                Player 2
             </th>
             <th></th>
         </tr>
@@ -43,13 +40,10 @@
                 @Html.DisplayFor(modelItem => item.Limit)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BallsRemaining)
+                @Html.DisplayFor(modelItem => item.Player1.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NumberOfInnings)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentPlayerId)
+                @Html.DisplayFor(modelItem => item.Player2.Name)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
