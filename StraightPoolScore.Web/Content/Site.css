@@ -1,4 +1,12 @@
-﻿/* Styles for validation helpers
+﻿.player {
+    background:red;
+    font-size:xx-large;
+    display:inline;
+}
+
+
+
+/* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error {
     color: #f00;

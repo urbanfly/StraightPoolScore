@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Styles.Render("~/Content/mobiscroll")
+@*Styles.Render("~/Content/mobiscroll")*@
 
 <style>
     #score-row td {
@@ -82,10 +82,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/mobiscroll")
-    <script type="text/javascript">
+    @*Scripts.Render("~/bundles/mobiscroll")*@
+    @*<script type="text/javascript">
         $(document).on('pageinit', null, function () {
             $(".mobiscroll").mobiscroll().select({ display: "inline", theme: "android-ics" });
         });
-    </script>
+    </script>*@
 }

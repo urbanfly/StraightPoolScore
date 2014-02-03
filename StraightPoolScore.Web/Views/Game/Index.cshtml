@@ -23,13 +23,10 @@
     <table>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Limit)
+                Game
             </th>
             <th>
-                Player 1
-            </th>
-            <th>
-                Player 2
+                Status
             </th>
             <th></th>
         </tr>
@@ -37,13 +34,10 @@
     @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Player1.Name) (@Html.DisplayFor(modelItem => item.Player1.Score)) vs @Html.DisplayFor(modelItem => item.Player2.Name) (@Html.DisplayFor(modelItem => item.Player2.Score))
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Limit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Player1.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Player2.Name)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

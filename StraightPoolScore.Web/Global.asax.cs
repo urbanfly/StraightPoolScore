@@ -1,5 +1,6 @@
 ﻿using Raven.Client.Document;
 using Raven.Client.Embedded;
+using Raven.Database.Server;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -36,6 +37,7 @@ namespace StraightPoolScore.Web
             if (IsDebug)
             {
                 eStore.UseEmbeddedHttpServer = true;
+                NonAdminHttp.EnsureCanListenToWhenInNonAdminContext(eStore.Configuration.Port);
             }
             eStore.Initialize();
             Store = eStore;
