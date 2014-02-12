@@ -80,7 +80,7 @@ namespace StraightPoolScore.Web.Controllers
         //
         // GET: /Game/Edit2/5
 
-        public ActionResult Edit2(int id)
+        public ActionResult Edit3(int id)
         {
             var game = RavenSession.Load<StraightPoolGame>(id);
             return View(game);
