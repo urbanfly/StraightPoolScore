@@ -8,9 +8,14 @@ Backend
 * RavenDB hosted at RavenHQ
 
 Frontend
-* smartphone-optimized single-page-app
+* game-oriented smartphone-optimized single-page-app
 * UI implemented with Bootstrap
 * general JS framework ZeptoJS (jQuery compatible replacement)
 * ViewModel implemented with KnockoutJS
 * Native Android/iOS/WP apps implemented with PhoneGap and available it app stores
 
+Later
+* league organizations
+* desktop site
+* stats with graphs, charts
+* user profiles
