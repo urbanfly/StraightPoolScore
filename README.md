@@ -1,20 +1,20 @@
 StraightPoolScore
 =================
 
-Backend
+### Backend
 * Asp.Net hosted on AppHarbor
   * WebAPI for loading data
   * SignalR real-time updates
 * RavenDB hosted at RavenHQ
 
-Frontend
+### Frontend
 * game-oriented smartphone-optimized single-page-app
 * UI implemented with Bootstrap
 * general JS framework ZeptoJS (jQuery compatible replacement)
 * ViewModel implemented with KnockoutJS
 * Native Android/iOS/WP apps implemented with PhoneGap and available it app stores
 
-Later
+### Later
 * league organizations
   * roster
   * schedules
@@ -24,7 +24,7 @@ Later
 * stats with graphs, charts
 * user profiles
 
-WebAPI
+### WebAPI
 * Find players
 * Create players
 * Create Game
@@ -33,5 +33,5 @@ WebAPI
 * Score Game
 * Submit Inning
 
-SignalR (server -> client)
+### SignalR (server -> client)
 * Inning ended; every button pressed on the "scoring" view
