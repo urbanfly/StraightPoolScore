@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <CompiledOutputPath>distrib\</CompiledOutputPath>
+    <OutputPath>bin\$(Configuration)</OutputPath>
+    <CordovaVersion>3.3</CordovaVersion>
+    <BuildCloudVersion>2.0</BuildCloudVersion>
+    <Name>StraightPoolScore.Nomad</Name>
+    <RootNamespace>StraightPoolScore.Nomad</RootNamespace>
+    <ProjectGuid>{b614cfba-782f-4b0b-bf16-263c7767ed9e}</ProjectGuid>
+    <ProjectName>StraightPoolScore</ProjectName>
+    <BundleID>com.example.straightpoolscore.nomad</BundleID>
+    <Description />
+    <PreviewMethod>SystemDefaultBrowser</PreviewMethod>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="config.xml">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="index.html" />
+    <Content Include="cordova.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\choosephoto.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\jquery-1.6.4.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\jquery.mobile-1.2.0.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="style\jquery.mobile-1.2.0.min.css">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="images" />
+    <Folder Include="style" />
+    <Folder Include="scripts" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+  <Target Name="ResolveReferences" />
+  <Target Name="CoreCompile" />
+  <Target Name="CreateManifestResourceNames" />
+  <Target Name="CopyFilesToOutputDirectory">
+    <ItemGroup>
+      <AbsoluteContentDestinations Include="$(OutputPath)%(Content.Identity)" />
+    </ItemGroup>
+    <Copy SourceFiles="@(Content)" DestinationFiles="@(AbsoluteContentDestinations)" />
+  </Target>
+</Project>
