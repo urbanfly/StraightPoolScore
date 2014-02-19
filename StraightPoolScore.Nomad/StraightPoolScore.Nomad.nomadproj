@@ -13,7 +13,7 @@
     <ProjectName>StraightPoolScore</ProjectName>
     <BundleID>com.example.straightpoolscore.nomad</BundleID>
     <Description />
-    <PreviewMethod>SystemDefaultBrowser</PreviewMethod>
+    <PreviewMethod>NomadSimulator</PreviewMethod>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
