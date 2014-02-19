@@ -330,7 +330,6 @@
     <Content Include="Views\Game\Edit.cshtml" />
     <Content Include="Views\Game\Delete.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Mobiscroll.cshtml" />
-    <Content Include="Views\Game\Edit3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
