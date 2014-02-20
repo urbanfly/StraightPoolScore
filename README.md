@@ -13,6 +13,7 @@ StraightPoolScore
 * general JS framework ZeptoJS (jQuery compatible replacement)
 * ViewModel implemented with KnockoutJS
 * Native Android/iOS/WP apps implemented with PhoneGap and available it app stores
+* Identity provided by Auth0 via G+, Facebook, Y!, etc. using OpenID Connect
 
 ### Later
 * league organizations
