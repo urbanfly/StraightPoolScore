@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <CompiledOutputPath>distrib\</CompiledOutputPath>
+    <CompiledOutputPath>C:\Users\Robert\Dropbox\StraightPoolScore</CompiledOutputPath>
     <OutputPath>bin\$(Configuration)</OutputPath>
     <CordovaVersion>3.3</CordovaVersion>
     <BuildCloudVersion>2.0</BuildCloudVersion>
@@ -13,7 +13,8 @@
     <ProjectName>StraightPoolScore</ProjectName>
     <BundleID>com.example.straightpoolscore.nomad</BundleID>
     <Description />
-    <PreviewMethod>NomadSimulator</PreviewMethod>
+    <PreviewMethod>SystemDefaultBrowser</PreviewMethod>
+    <HostingMethod>EmbeddedWebServer</HostingMethod>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,13 +33,22 @@
     <Content Include="images\choosephoto.png">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="scripts\jquery-1.6.4.js">
+    <Content Include="scripts\angular.min.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="scripts\jquery.mobile-1.2.0.min.js">
+    <Content Include="scripts\game.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="style\jquery.mobile-1.2.0.min.css">
+    <Content Include="scripts\jquery-2.1.0.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\jquery.mobile-1.4.1.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="style\game.css">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="style\jquery.mobile-1.4.1.min.css">
       <SubType>Content</SubType>
     </Content>
   </ItemGroup>

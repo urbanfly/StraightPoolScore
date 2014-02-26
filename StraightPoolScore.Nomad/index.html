@@ -1,175 +1,71 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app>
 <head>
-    <title>Page Title</title>
-    <!--<script src="scripts/jquery-1.6.4.js" type="text/javascript"></script>-->
-    <!--<script src="scripts/jquery.mobile-1.2.0.min.js" type="text/javascript"></script>-->
-    <script src="cordova.js" type="text/javascript"></script>
-    <!--<link rel="Stylesheet" href="style/jquery.mobile-1.2.0.min.css" />-->
+    <title>{{game.player1.name}} vs. {{game.player2.name}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style type="text/css">
-        html, body {
-            margin: 0px;
-        }
-
-        #gameArea {
-            text-align: center;
-            width: 200px;
-        }
-
-        #playerArea {
-            position: relative;
-            /*border:1px solid red;*/
-            height: 100px;
-        }
-
-        #switchSides {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            top: 50%;
-            margin-top: -20px;
-            margin-left: -20px;
-            font-size: x-large;
-            /*border: 1px solid red;*/
-        }
-
-        .player {
-            width: 70px;
-            position: absolute;
-            /*border: 1px solid red;*/
-        }
-
-        #player1 {
-            left: 0px;
-        }
-
-        #player2 {
-            right: 0px;
-        }
-
-        .playerName {
-            text-align: center;
-        }
-
-        .playerImage {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            position: relative;
-            border: 1px solid blue;
-        }
-
-        .fouls {
-            position: absolute;
-            text-align: center;
-            width: 100%;
-            bottom: 0px;
-        }
-
-            .fouls div {
-                display: inline-block;
-                width: 16px;
-                height: 16px;
-                margin: -2px;
-                vertical-align: middle;
-                text-align: center;
-                color: red;
-                opacity: .5;
-            }
-
-        .playerScore {
-            text-align: center;
-        }
-
-        #ballsRemainingArea {
-            margin-top: 10px;
-        }
-
-        #ballsRemainingArea button {
-            font-size: large;
-            width: 50px;
-            height: 50px;
-        }
-
-        #ballsRemaining {
-            font-size: xx-large;
-            display: inline-block;
-            width: 50px;
-        }
-
-        #secondaryEndings {
-            margin-top: 10px;
-        }
-
-        #primaryEndings {
-            margin-top: 10px;
-        }
-
-        #primaryEndings button {
-            width: 50px;
-            height: 50px;
-        }
-
-        #detailsArea table {
-            width: 100%;
-        }
-
-        #statsArea table {
-            width: 100%;
-        }
-    </style>
+    <!-- JQuery -->
+    <script src="scripts/jquery-2.1.0.min.js"></script>
+    <!-- JQuery Mobile -->
+    <!--<script src="scripts/jquery.mobile-1.4.1.min.js"></script>
+    <link href="style/jquery.mobile-1.4.1.min.css" rel="stylesheet" />-->
+    <!-- AngularJS -->
+    <script src="scripts/angular.min.js"></script>
+    <!-- PhoneGap (Cordova) -->
+    <!--<script src="cordova.js" type="text/javascript"></script>-->
+    <!-- app -->
+    <script src="scripts/game.js"></script>
+    <link href="style/game.css" rel="stylesheet" />
 </head>
 <body>
-    <div id="gameArea">
+    <div id="gameArea" ng-controller="Game">
         <div id="playerArea">
             <div class="player" id="player1">
-                <div class="playerName" id="player1Name">Robert</div>
+                <div class="playerName" id="player1Name">{{model.player1.name}}</div>
                 <div class="playerImage" id="player1Image">
                     <div class="fouls">
-                        <div id="player1Foul1">X</div>
-                        <div id="player1Foul2">X</div>
-                        <div id="player1Foul3">X</div>
+                        <div id="player1Foul1" class="foul-{{model.player1.foul1}}">X</div>
+                        <div id="player1Foul2" class="foul-{{model.player1.foul2}}">X</div>
+                        <div id="player1Foul3" class="foul-{{model.player1.foul3}}">X</div>
                     </div>
                 </div>
-                <div class="playerScore" id="player1Score">0</div>
+                <div class="playerScore" id="player1Score">{{model.player1.score}}</div>
             </div>
-            <button id="switchSides">&#8644;</button>
+            <button id="switchSides" ng-show="model.canSwitch()">&#8644;</button>
             <div class="player" id="player2">
-                <div class="playerName" id="player2Name">Jerry</div>
+                <div class="playerName" id="player2Name">{{model.player2.name}}</div>
                 <div class="playerImage" id="player2Image">
                     <div class="fouls">
-                        <div id="player2Foul1">X</div>
-                        <div id="player2Foul2">X</div>
-                        <div id="player2Foul3">X</div>
+                        <div id="player2Foul1" class="foul-{{model.player2.foul1}}">X</div>
+                        <div id="player2Foul2" class="foul-{{model.player2.foul2}}">X</div>
+                        <div id="player2Foul3" class="foul-{{model.player2.foul3}}">X</div>
                     </div>
                 </div>
-                <div class="playerScore" id="player2Score">0</div>
+                <div class="playerScore" id="player2Score">{{model.player2.core}}</div>
             </div>
         </div>
 
         <div id="panelArea">
-            <div id="scoringArea">
+            <div id="scoringArea" ng-show="model.showScoring">
                 <div id="ballsRemainingArea">
-                    <button id="ballsRemainingMinus">-</button>
-                    <div id="ballsRemaining">15</div>
-                    <button id="ballsRemainingAdd">+</button>
+                    <button id="ballsRemainingMinus" ng-click="dec()">-</button>
+                    <div id="ballsRemaining">{{model.ballsRemaining}}</div>
+                    <button id="ballsRemainingAdd" ng-click="inc()">+</button>
                 </div>
 
                 <div id="secondaryEndings">
-                    <button id="breakingFoul">Breaking Foul</button>
-                    @*<button id="rebreak">Pass / Re-break</button>*@
-                    <button id="newRack">New Rack</button>
+                    <button id="breakingFoul" ng-click="breakingFoul()" ng-show="model.isOpeningRack">Breaking Foul</button>
+                    <button id="rebreak" ng-click="rebreak()" ng-show="model.isAfterBreakingFoul">Pass / Re-break</button>
+                    <button id="newRack" ng-click="newRack()">New Rack</button>
                 </div>
 
                 <div id="primaryEndings">
-                    <button id="ending-miss">Miss</button>
-                    <button id="ending-foul">Foul</button>
-                    <button id="ending-safe">Safe</button>
+                    <button id="ending-miss" ng-click="miss()">Miss</button>
+                    <button id="ending-foul" ng-click="foul()">Foul</button>
+                    <button id="ending-safe" ng-click="safe()">Safe</button>
                 </div>
             </div>
 
-            <div id="detailsArea">
+            <div id="detailsArea" ng-show="model.showDetails">
                 <table>
                     <thead>
                         <tr>
@@ -214,7 +110,7 @@
                 </table>
             </div>
 
-            <div id="statsArea">
+            <div id="statsArea" ng-show="model.showStats">
                 <table>
                     <thead>
                         <tr>
@@ -270,6 +166,12 @@
                     </tbody>
                 </table>
             </div>
+
+            <input type="radio" name="visiblePanel" ng-checked="model.showScoring" />
+            <input type="radio" name="visiblePanel" ng-checked="model.showDetails" />
+            <input type="radio" name="visiblePanel" ng-checked="model.showStats" />
+
+            <input type="text" ng-model="model.showStats" />
         </div>
     </div>
 </body>

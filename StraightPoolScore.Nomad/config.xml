@@ -6,6 +6,7 @@
   <author email="urbanfly@gmail.com">urbanfly@gmail.com</author>
   <access origin="*" />
   <preference name="phonegap-version" value="3.3.0" />
+  <gap:plugin name="com.auth0.sdk" />
   <gap:plugin name="org.apache.cordova.battery-status" />
   <gap:plugin name="org.apache.cordova.camera" />
   <gap:plugin name="org.apache.cordova.media-capture" />
