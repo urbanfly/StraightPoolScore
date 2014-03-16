@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html ng-app>
 <head>
     <!-- TODO: figure out how to bind the title -->
@@ -18,6 +18,27 @@
     <link href="style/game.css" rel="stylesheet" />
 </head>
 <body>
+    <div id="home" ng-controller="Home">
+        Home Page
+        <ul>
+            <li>New Game</li>
+            <li>Find Game</li>
+            <li>View Profile</li>
+        </ul>
+    </div>
+    
+    <div id="createGame" ng-controller="CreateGame">
+        Create a new game
+    </div>
+    
+    <div id="findGame" ng-controller="FindGame">
+        Find a game
+    </div>
+    
+    <div id="viewProfile" ng-controller="ViewProfile">
+        View Profile
+    </div>
+    
     <div id="gameArea" ng-controller="Game">
         <div id="playerArea">
             <div class="player" id="player1">
@@ -31,7 +52,10 @@
                 </div>
                 <div class="playerScore" id="player1Score">{{player1.score}}</div>
             </div>
-            <button id="switchSides" ng-show="canSwitch()" ng-click="switchPlayers()">&#8644;</button>
+            <div id="topButtons">
+                <button ng-show="canSwitch()" ng-click="switchPlayers()">&#8644;</button>
+                <button ng-show="!canSwitch()" ng-click="undo()">&#8630;</button>
+            </div>
             <div class="player" id="player2">
                 <div class="playerName" id="player2Name">{{player2.name}}</div>
                 <div class="playerImage" id="player2Image">
@@ -61,6 +85,7 @@
                     <button id="breakingFoul" ng-click="scoring.breakingFoul()" ng-show="scoring.isOpeningRack">Breaking Foul</button>
                     <button id="rebreak" ng-click="scoring.rebreak()" ng-show="scoring.isAfterBreakingFoul">Pass / Re-break</button>
                     <button id="newRack" ng-click="scoring.newRack()">New Rack</button>
+                    <button id="with15thBall" ng-click="scoring.with15thBall()" ng-show="scoring.isAfterNewRack">15th ball sunk</button>
                 </div>
 
                 <div id="primaryEndings">

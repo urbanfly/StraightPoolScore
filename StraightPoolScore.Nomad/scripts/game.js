@@ -1,4 +1,4 @@
-﻿function Game($scope) {
+function Game($scope) {
     $scope.player1 = {
         name: "Robert",
         score: 88,
@@ -26,6 +26,10 @@
         $scope.player1 = $scope.player2;
         $scope.player2 = p1;
     };
+    
+    $scope.undo = function () {
+        // TODO : maintain a stack of commands that can be undone
+    };
 
     $scope.visiblePanel = "scoring";
 
@@ -34,6 +38,7 @@
         ballsRemaining: 15,
         isOpeningRack: true,
         isAfterBreakingFoul: false,
+        isAfterNewRack: false,
 
         inc : function () {
             if ($scope.scoring.ballsRemaining < $scope.scoring.maxBalls)
@@ -45,18 +50,40 @@
                 $scope.scoring.ballsRemaining--;
         },
 
-        miss : function () { },
+        miss : function () {
+            $scope.scoring.isOpeningRack = false;
+            $scope.scoring.isAfterNewRack = false;
+            $scope.scoring.isAfterBreakingFoul = false;
+        },
 
-        foul : function () { },
+        foul : function () {
+            $scope.scoring.isOpeningRack = false;
+            $scope.scoring.isAfterNewRack = false;
+            $scope.scoring.isAfterBreakingFoul = false;
+        },
 
-        safe : function () { },
+        safe : function () {
+            $scope.scoring.isOpeningRack = false;
+            $scope.scoring.isAfterNewRack = false;
+            $scope.scoring.isAfterBreakingFoul = false;
+        },
 
-        breakingFoul : function () { },
+        breakingFoul : function () {
+            $scope.scoring.isAfterBreakingFoul = true;
+            $scope.scoring.isOpeningRack = false;
+        },
 
-        rebreak : function () { },
+        rebreak : function () {
+            $scope.scoring.isAfterBreakingFoul = false;
+            $scope.scoring.isOpeningRack = true;
+        },
 
-        newRack: function () { },
+        newRack: function () {
+            $scope.scoring.isOpeningRack = false;
+            $scope.scoring.isAfterNewRack = true;
+        },
 
+        with15thBall : function () { },
         // TODO: How to implement newRack-with-15th-ball
     };
 
