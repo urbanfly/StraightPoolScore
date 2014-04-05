@@ -17,27 +17,10 @@ spsControllers.controller("findGameCtrl", ["$scope",
     }
 ]);
 
-spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams",
-    function ($scope, $routeParams) {
-        $scope.gameId = $routeParams.gameId;
-
-        $scope.player1 = {
-            name: "Robert",
-            score: 88,
-            foul1: false,
-            foul2: false,
-            foul3: false,
-            image: "",
-        };
-
-        $scope.player2 = {
-            name: "Taylor",
-            score: 66,
-            foul1: true,
-            foul2: true,
-            foul3: false,
-            image: "",
-        };
+spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
+    function ($scope, $routeParams, $games) {
+        var g = $games.load($routeParams.gameId);
+        angular.extend($scope, g);
 
         $scope.canSwitch = function () {
             return $scope.scoring.isOpeningRack && $scope.scoring.ballsRemaining == $scope.scoring.maxBalls;
@@ -56,12 +39,6 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams",
         $scope.visiblePanel = "scoring";
 
         $scope.scoring = {
-            maxBalls: 15,
-            ballsRemaining: 15,
-            isOpeningRack: true,
-            isAfterBreakingFoul: false,
-            isAfterNewRack: false,
-
             inc: function () {
                 if ($scope.scoring.ballsRemaining < $scope.scoring.maxBalls)
                     $scope.scoring.ballsRemaining++;
@@ -108,18 +85,6 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams",
             with15thBall: function () { },
             // TODO: How to implement newRack-with-15th-ball
         };
-
-        $scope.innings = [
-            {
-                num: 1,
-                p1: { score: 0, ballsMade: 0, ending: "BreakingFoul" },
-                p2: { score: 0, ballsMade: 0, ending: "BreakingFoul" }
-            }
-        ];
-
-        $scope.stats = [
-            { name: "Total Balls", p1: 88, p2: 68 }
-        ];
     }
 ]);
 
@@ -128,3 +93,60 @@ spsControllers.controller("profileCtrl", ["$scope",
 
     }
 ]);
+
+//var spsServices = angular.module("spsServices", ["ngResource"]);
+
+//spsServices.factory("$games", ["$resource",
+//    function ($resource) {
+//        return $resource("games/:gameId", {}, {
+//            query: { method: "GET", params: { phoneId: "" }, isArray: true }
+//        });
+//    }
+//]);
+
+var spsServices = angular.module("spsServices", []);
+
+spsServices.factory("$games", 
+    function () {
+        return {
+            load: function (gameId) {
+                return {
+                    id: gameId,
+                    player1: {
+                        name: "Robert",
+                        score: 88,
+                        foul1: false,
+                        foul2: false,
+                        foul3: false,
+                        image: "",
+                    },
+                    player2: {
+                        name: "Taylor",
+                        score: 66,
+                        foul1: true,
+                        foul2: true,
+                        foul3: false,
+                        image: "",
+                    },
+                    scoring: {
+                        maxBalls: 15,
+                        ballsRemaining: 15,
+                        isOpeningRack: true,
+                        isAfterBreakingFoul: false,
+                        isAfterNewRack: false,
+                    },
+                    innings: [
+                        {
+                            num: 1,
+                            p1: { score: 0, ballsMade: 0, ending: "BreakingFoul" },
+                            p2: { score: 0, ballsMade: 0, ending: "BreakingFoul" }
+                        }
+                    ],
+                    stats: [
+                        { name: "Total Balls", p1: 88, p2: 68 }
+                    ]
+                };
+            }
+        };
+    }
+);

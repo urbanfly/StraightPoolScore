@@ -1,4 +1,4 @@
-var spsApp = angular.module("spsApp", ["ngRoute", "spsControllers"]);
+var spsApp = angular.module("spsApp", ["ngRoute", "spsControllers", "spsServices"]);
 
 spsApp.config(["$routeProvider",
     function ($routeProvider) {
