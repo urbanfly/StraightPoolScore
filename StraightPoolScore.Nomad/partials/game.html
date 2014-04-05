@@ -1,0 +1,159 @@
+﻿<div id="gameArea">
+    <div id="playerArea">
+        <div class="player" id="player1">
+            <div class="playerName" id="player1Name">{{player1.name}}</div>
+            <div class="playerImage" id="player1Image">
+                <div class="fouls">
+                    <div id="player1Foul1" class="foul-{{player1.foul1}}">X</div>
+                    <div id="player1Foul2" class="foul-{{player1.foul2}}">X</div>
+                    <div id="player1Foul3" class="foul-{{player1.foul3}}">X</div>
+                </div>
+            </div>
+            <div class="playerScore" id="player1Score">{{player1.score}}</div>
+        </div>
+        <div id="topButtons">
+            <button ng-show="canSwitch()" ng-click="switchPlayers()">&#8644;</button>
+            <button ng-show="!canSwitch()" ng-click="undo()">&#8630;</button>
+        </div>
+        <div class="player" id="player2">
+            <div class="playerName" id="player2Name">{{player2.name}}</div>
+            <div class="playerImage" id="player2Image">
+                <div class="fouls">
+                    <div id="player2Foul1" class="foul-{{player2.foul1}}">X</div>
+                    <div id="player2Foul2" class="foul-{{player2.foul2}}">X</div>
+                    <div id="player2Foul3" class="foul-{{player2.foul3}}">X</div>
+                </div>
+            </div>
+            <div class="playerScore" id="player2Score">{{player2.score}}</div>
+        </div>
+    </div>
+
+    <div id="panelArea">
+        <input type="radio" name="visiblePanel" ng-model="visiblePanel" value="scoring" />
+        <input type="radio" name="visiblePanel" ng-model="visiblePanel" value="details" />
+        <input type="radio" name="visiblePanel" ng-model="visiblePanel" value="stats" />
+
+        <div id="scoringArea" ng-show="visiblePanel=='scoring'">
+            <div id="ballsRemainingArea">
+                <button id="ballsRemainingAdd" ng-click="scoring.inc()">+</button>
+                <div id="ballsRemaining">{{scoring.ballsRemaining}}</div>
+                <button id="ballsRemainingMinus" ng-click="scoring.dec()">-</button>
+            </div>
+
+            <div id="secondaryEndings">
+                <button id="breakingFoul" ng-click="scoring.breakingFoul()" ng-show="scoring.isOpeningRack">Breaking Foul</button>
+                <button id="rebreak" ng-click="scoring.rebreak()" ng-show="scoring.isAfterBreakingFoul">Pass / Re-break</button>
+                <button id="newRack" ng-click="scoring.newRack()">New Rack</button>
+                <button id="with15thBall" ng-click="scoring.with15thBall()" ng-show="scoring.isAfterNewRack">15th ball sunk</button>
+            </div>
+
+            <div id="primaryEndings">
+                <button id="ending-miss" ng-click="scoring.miss()">Miss</button>
+                <button id="ending-foul" ng-click="scoring.foul()">Foul</button>
+                <button id="ending-safe" ng-click="scoring.safe()">Safe</button>
+            </div>
+        </div>
+        <!-- TODO: Bind details -->
+        <div id="detailsArea" ng-show="visiblePanel=='details'">
+            <table>
+                <thead>
+                    <tr>
+                        <th>E</th>
+                        <th>B</th>
+                        <th>S</th>
+                        <th>#</th>
+                        <th>S</th>
+                        <th>B</th>
+                        <th>E</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>BF</td>
+                        <td>-2</td>
+                        <td>1</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>S</td>
+                        <td>-2</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>M</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>M</td>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>0</td>
+                        <td>F</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- TODO: Bind stats -->
+        <div id="statsArea" ng-show="visiblePanel=='stats'">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="3">Metric</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>88</td>
+                        <td>Total Balls</td>
+                        <td>68</td>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>Handicap</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>High Run</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>2.2</td>
+                        <td>Avg. Run</td>
+                        <td>2.0</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Total Fouls</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Total Safes</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Successful Safes</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Balls b/w Errors</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Std. Dev. Run</td>
+                        <td>9</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

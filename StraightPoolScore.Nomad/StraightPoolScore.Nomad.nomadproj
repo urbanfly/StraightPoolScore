@@ -15,6 +15,8 @@
     <Description />
     <PreviewMethod>SystemDefaultBrowser</PreviewMethod>
     <HostingMethod>EmbeddedWebServer</HostingMethod>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,7 +35,43 @@
     <Content Include="images\choosephoto.png">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="packages.config">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\createGame.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\findGame.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\game.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\home.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\profile.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-mocks.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-route.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-route.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-route.min.js.map">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="scripts\angular.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular.min.js.map">
       <SubType>Content</SubType>
     </Content>
     <Content Include="scripts\game.js">
@@ -45,6 +83,9 @@
     <Content Include="scripts\jquery.mobile-1.4.1.min.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="scripts\controllers.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="style\game.css">
       <SubType>Content</SubType>
     </Content>
@@ -54,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images" />
+    <Folder Include="partials" />
     <Folder Include="style" />
     <Folder Include="scripts" />
   </ItemGroup>
@@ -66,5 +108,12 @@
       <AbsoluteContentDestinations Include="$(OutputPath)%(Content.Identity)" />
     </ItemGroup>
     <Copy SourceFiles="@(Content)" DestinationFiles="@(AbsoluteContentDestinations)" />
+  </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
 </Project>
