@@ -1,12 +1,12 @@
 ﻿<div id="gameArea">
     <div id="playerArea">
-        <div class="player" id="player1">
+        <div class="player {{player1.isActive ? 'player-active' : ''}}" id="player1">
             <div class="playerName" id="player1Name">{{player1.name}}</div>
             <div class="playerImage" id="player1Image">
-                <div class="fouls">
-                    <div id="player1Foul1" class="foul-{{player1.foul1}}">X</div>
-                    <div id="player1Foul2" class="foul-{{player1.foul2}}">X</div>
-                    <div id="player1Foul3" class="foul-{{player1.foul3}}">X</div>
+                <div class="fouls fouls-{{player1.fouls}}">
+                    <div id="player1Foul1" class="foul-1">X</div>
+                    <div id="player1Foul2" class="foul-2">X</div>
+                    <div id="player1Foul3" class="foul-3">X</div>
                 </div>
             </div>
             <div class="playerScore" id="player1Score">{{player1.score}}</div>
@@ -15,13 +15,13 @@
             <button ng-show="canSwitch()" ng-click="switchPlayers()">&#8644;</button>
             <button ng-show="!canSwitch()" ng-click="undo()">&#8630;</button>
         </div>
-        <div class="player" id="player2">
+        <div class="player {{player2.isActive ? 'player-active' : ''}}" id="player2">
             <div class="playerName" id="player2Name">{{player2.name}}</div>
             <div class="playerImage" id="player2Image">
-                <div class="fouls">
-                    <div id="player2Foul1" class="foul-{{player2.foul1}}">X</div>
-                    <div id="player2Foul2" class="foul-{{player2.foul2}}">X</div>
-                    <div id="player2Foul3" class="foul-{{player2.foul3}}">X</div>
+                <div class="fouls fouls-{{player2.fouls}}">
+                    <div id="player2Foul1" class="foul-1">X</div>
+                    <div id="player2Foul2" class="foul-2">X</div>
+                    <div id="player2Foul3" class="foul-3">X</div>
                 </div>
             </div>
             <div class="playerScore" id="player2Score">{{player2.score}}</div>
