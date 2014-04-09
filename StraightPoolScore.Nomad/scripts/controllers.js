@@ -17,127 +17,163 @@ spsControllers.controller("findGameCtrl", ["$scope",
     }
 ]);
 
-spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
-    function ($scope, $routeParams, $games) {
-        var game = $games.load($routeParams.gameId);
-        angular.extend($scope, game);
+// TODO: update the "active" mechanism
 
-        $scope.currentPlayer = (game.currentPlayer == game.player1.id) ? $scope.player1 : $scope.player2;
-        $scope.currentPlayer.isActive = true;
+spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
+    function ($scope, $routeParams, $games) {        
+        var game = $games.load($routeParams.gameId);
+        initializeScope(game);
+
+        function initializeScope(game)
+        {
+            $scope.game = game;
+            $scope.currentPlayer = getCurrentPlayer();
+            $scope.ballsRemaining = game.ballsRemaining;
+            $scope.isOpeningRack = game.turns.length == 0 || game.turns[game.turns.length - 1].ending == "ThreeConsecutiveFouls";
+            $scope.isAfterBreakingFoul = game.turns.length > 0 && game.turns[game.turns.length - 1].ending == "BreakingFoul";
+            $scope.isAfterNewRack = game.turns.length > 0 && game.turns[game.turns.length - 1].ending == "NewRack";
+        }
+
+        function getCurrentPlayer()
+        {
+            return (game.currentPlayerId == game.player1.id) ? game.player1 : game.player2;
+        }
+
+        function moveToNextPlayer() {
+            game.currentPlayerId = (game.currentPlayerId == game.player1.id) ? game.player2.id : game.player1.id;
+            $scope.currentPlayer = getCurrentPlayer();
+        }
 
         $scope.canSwitch = function () {
-            return $scope.scoring.isOpeningRack && $scope.scoring.ballsRemaining == $scope.scoring.maxBalls;
+            return game.turns.length == 0;
         };
 
         $scope.switchPlayers = function () {
-            var p1 = $scope.player1;
-            $scope.player1 = $scope.player2;
-            $scope.player2 = p1;
-            $scope.player1.isActive = true;
-            $scope.player2.isActive = false;
+            var p1 = game.player1;
+            game.player1 = game.player2;
+            game.player2 = p1;
+            game.currentPlayerId = game.player1.id;
         };
 
         $scope.undo = function () {
             // TODO : maintain a stack of commands that can be undone
+            // pop a turn off of the turns array and update the game state to 
         };
 
-        $scope.visiblePanel = "scoring";
-
-        $scope.scoring.inc = function () {
-            if ($scope.scoring.ballsRemaining < $scope.scoring.maxBalls)
-                $scope.scoring.ballsRemaining++;
+        $scope.inc = function () {
+            if ($scope.ballsRemaining < game.ballsRemaining)
+                $scope.ballsRemaining++;
         };
 
-        $scope.scoring.dec = function () {
-            if ($scope.scoring.ballsRemaining > 2)
-                $scope.scoring.ballsRemaining--;
+        $scope.dec = function () {
+            if ($scope.ballsRemaining > 2)
+                $scope.ballsRemaining--;
         };
 
-        $scope.scoring.miss = function () {
-            updateScore();
-            resetFouls();
-            switchPlayers();
-        };
-
-        $scope.scoring.foul = function () {
-            updateScore();
-            var cp = $scope.currentPlayer;
-            cp.fouls++;
-            cp.score--;
-
-            if (cp.fouls == 3)
+        $scope.endTurn = function (endingType)
+        {
+            if (endingType == "NewRack")
             {
-                cp.score -= 15;
-                cp.fouls = 0;
-
-                $scope.scoring.ballsRemaining = 15;
-                $scope.scoring.maxBalls = 15;
-                $scope.scoring.isOpeningRack = true;
-                return;
+                $scope.ballsRemaining = 1;
             }
 
-            switchPlayers();
+            var ballsMade = game.ballsRemaining - $scope.ballsRemaining;
+
+            var turn = updateStats($scope.currentPlayer, ballsMade, endingType);
+
+            game.turns.push(turn);
+
+            $scope.isOpeningRack = false;
+            $scope.isAfterBreakingFoul = false;
+            $scope.isAfterNewRack = false;
+
+            // only switch players if this wasn't a 'NewRack' or a 3-foul
+            switch (turn.ending) {
+                case "Miss":
+                case "Foul":
+                case "Safety":
+                    game.ballsRemaining -= ballsMade;
+                    moveToNextPlayer();
+                    break;
+                case "BreakingFoul":
+                    $scope.isAfterBreakingFoul = true;
+                    moveToNextPlayer();
+                    break;
+                case "Pass":
+                    $scope.isOpeningRack = true;
+                    moveToNextPlayer();
+                    break;
+                case "ThreeConsecutiveFouls":
+                    $scope.isOpeningRack = true;
+                    game.ballsRemaining = 15;
+                    break;
+                case "NewRack":
+                    $scope.isAfterNewRack = true;
+                    game.ballsRemaining = 15;
+                    break;
+            }
+
+            $scope.ballsRemaining = game.ballsRemaining;
+
+            //game.$save();
+
+            return turn;
         };
 
-        $scope.scoring.safe = function () {
-            updateScore();
-            resetFouls();
-            switchPlayers();
-        };
+        function updateStats(player, ballsMade, ending)
+        {
+            player.totalBallsMade += ballsMade;
+            player.score += ballsMade;
 
-        $scope.scoring.breakingFoul = function () {
-            $scope.currentPlayer.score -= 2;
-            $scope.scoring.isAfterBreakingFoul = true;
-            $scope.scoring.isOpeningRack = false;
-            switchPlayers();
-        };
+            if (ballsMade > 0 || ending != "Foul") {
+                player.consecutiveFouls = 0;
+            }
 
-        $scope.scoring.rebreak = function () {
-            $scope.scoring.isAfterBreakingFoul = false;
-            $scope.scoring.isOpeningRack = true;
-            switchPlayers();
-        };
+            switch (ending) {
+                case "BreakingFoul":
+                    player.score -= 2;
+                    player.totalFouls++;
+                    break;
+                case "Foul":
+                    player.totalFouls++;
+                    player.consecutiveFouls++;
+                    player.score--;
+                    if (player.consecutiveFouls == 3) {
+                        player.score -= 15;
+                        player.consecutiveFouls = 0;
+                        ending = "ThreeConsecutiveFouls";
+                    }
+                    break;
+                case "Miss":
+                    player.totalMisses += 1;
+                    break;
+                case "Safety":
+                    player.totalSafeties += 1;
+                    break;
+            }
 
-        $scope.scoring.newRack = function () {
-            $scope.scoring.ballsRemaining = 1;
-            updateScore();
-            $scope.scoring.isAfterNewRack = true;
+            if (player.score >= game.Limit) {
+                ending = "Win";
+            }
 
-            $scope.scoring.ballsRemaining = 15;
-            $scope.scoring.maxBalls = $scope.scoring.ballsRemaining;
-        };
+            var turn = {
+                playerId: player.id,
+                ending: ending,
+                ballsMade: ballsMade,
+            };
 
-        $scope.scoring.with15thBall = function () {
-            $scope.scoring.isAfterNewRack = false;
+            if (ending != "NewRack") {
+                player.highRun = Math.max(player.highRun, turn.ballsMade);
+            }
+            
+            return turn;
+        }
+
+        $scope.with15thBall = function () {
+            $scope.isAfterNewRack = false;
             $scope.currentPlayer.score++;
+            game.turns[game.turns.length - 1].ballsMade++;
         };
-
-        function updateScore()
-        {
-            var diff = $scope.scoring.maxBalls - $scope.scoring.ballsRemaining;
-            $scope.currentPlayer.score += diff;
-
-            if (diff > 0)
-                resetFouls();
-
-            $scope.scoring.maxBalls = $scope.scoring.ballsRemaining;
-
-            $scope.scoring.isOpeningRack = false;
-            $scope.scoring.isAfterNewRack = false;
-            $scope.scoring.isAfterBreakingFoul = false;
-        }
-
-        function resetFouls()
-        {
-            $scope.currentPlayer.fouls = 0;
-        }
-
-        function switchPlayers()
-        {
-            $scope.currentPlayer.isActive = false;
-            $scope.currentPlayer = ($scope.currentPlayer == $scope.player1) ? $scope.player2 : $scope.player1;
-            $scope.currentPlayer.isActive = true;
-        }
     }
 ]);
 
@@ -146,67 +182,3 @@ spsControllers.controller("profileCtrl", ["$scope",
 
     }
 ]);
-
-//var spsServices = angular.module("spsServices", ["ngResource"]);
-
-//spsServices.factory("$games", ["$resource",
-//    function ($resource) {
-//        return $resource("games/:gameId", {}, {
-//            query: { method: "GET", params: { phoneId: "" }, isArray: true }
-//        });
-//    }
-//]);
-
-var spsServices = angular.module("spsServices", []);
-
-spsServices.factory("$games",
-    function () {
-        return {
-            load: function (gameId) {
-                return {
-                    id: gameId,
-                    player1: {
-                        id: "players/1",
-                        name: "Robert",
-                        score: 0,
-                        fouls: 0,
-                        image: "",
-                    },
-                    player2: {
-                        id:"players/2",
-                        name: "Taylor",
-                        score: 0,
-                        fouls: 0,
-                        image: "",
-                    },
-                    currentPlayer:"players/1",
-                    scoring: {
-                        maxBalls: 15,
-                        ballsRemaining: 15,
-                        isOpeningRack: true,
-                        isAfterBreakingFoul: false,
-                        isAfterNewRack: false,
-                    },
-                    innings: [
-                        {
-                            num: 1,
-                            p1: { score: 0, ballsMade: 0, ending: "BreakingFoul" },
-                            p2: { score: 0, ballsMade: 0, ending: "BreakingFoul" }
-                        }
-                    ],
-                    stats: [
-                        { name: "Total Balls", p1: 88, p2: 68 },
-                        { name: "Handicap", p1: 0, p2: 0 },
-                        { name: "High Run", p1: 0, p2: 0 },
-                        { name: "Avg. Run", p1: 0, p2: 0 },
-                        { name: "Total Fouls", p1: 0, p2: 0 },
-                        { name: "Total Safes", p1: 0, p2: 0 },
-                        { name: "Successful Safes", p1: 0, p2: 0 },
-                        { name: "Balls b/w Errorrs", p1: 0, p2: 0 },
-                        { name: "StdDev Run", p1: 0, p2: 0 },
-                    ]
-                };
-            }
-        };
-    }
-);

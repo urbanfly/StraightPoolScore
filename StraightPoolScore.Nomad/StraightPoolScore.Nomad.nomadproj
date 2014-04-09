@@ -86,6 +86,9 @@
     <Content Include="scripts\controllers.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="scripts\services.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="style\game.css">
       <SubType>Content</SubType>
     </Content>
