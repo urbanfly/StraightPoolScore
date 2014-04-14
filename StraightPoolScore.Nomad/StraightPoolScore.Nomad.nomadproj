@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <CompiledOutputPath>C:\Users\Robert\Dropbox\StraightPoolScore</CompiledOutputPath>
+    <OutputPath>bin\$(Configuration)</OutputPath>
+    <CordovaVersion>3.3</CordovaVersion>
+    <BuildCloudVersion>2.0</BuildCloudVersion>
+    <Name>StraightPoolScore.Nomad</Name>
+    <RootNamespace>StraightPoolScore.Nomad</RootNamespace>
+    <ProjectGuid>{b614cfba-782f-4b0b-bf16-263c7767ed9e}</ProjectGuid>
+    <ProjectName>StraightPoolScore</ProjectName>
+    <BundleID>com.example.straightpoolscore.nomad</BundleID>
+    <Description />
+    <PreviewMethod>SystemDefaultBrowser</PreviewMethod>
+    <HostingMethod>EmbeddedWebServer</HostingMethod>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="config.xml">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="index.html" />
+    <Content Include="cordova.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="images\choosephoto.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="packages.config">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\createGame.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\findGame.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\game.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\home.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\profile.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-mocks.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-route.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-route.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-route.min.js.map">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular.min.js.map">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\game.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\jquery-2.1.0.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\jquery.mobile-1.4.1.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\controllers.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\services.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="style\game.css">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="style\jquery.mobile-1.4.1.min.css">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="images" />
+    <Folder Include="partials" />
+    <Folder Include="style" />
+    <Folder Include="scripts" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+  <Target Name="ResolveReferences" />
+  <Target Name="CoreCompile" />
+  <Target Name="CreateManifestResourceNames" />
+  <Target Name="CopyFilesToOutputDirectory">
+    <ItemGroup>
+      <AbsoluteContentDestinations Include="$(OutputPath)%(Content.Identity)" />
+    </ItemGroup>
+    <Copy SourceFiles="@(Content)" DestinationFiles="@(AbsoluteContentDestinations)" />
+  </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

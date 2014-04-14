@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="com.example.straightpoolscore.nomad" version="1.0.0" xmlns:gap="http://phonegap.com/ns/1.0" xmlns="http://www.w3.org/ns/widgets">
+  <name>StraightPoolScore</name>
+  <description>
+  </description>
+  <author email="urbanfly@gmail.com">urbanfly@gmail.com</author>
+  <access origin="*" />
+  <preference name="phonegap-version" value="3.3.0" />
+  <gap:plugin name="com.auth0.sdk" />
+  <gap:plugin name="org.apache.cordova.battery-status" />
+  <gap:plugin name="org.apache.cordova.camera" />
+  <gap:plugin name="org.apache.cordova.media-capture" />
+  <gap:plugin name="org.apache.cordova.console" />
+  <gap:plugin name="org.apache.cordova.contacts" />
+  <gap:plugin name="org.apache.cordova.device" />
+  <gap:plugin name="org.apache.cordova.device-motion" />
+  <gap:plugin name="org.apache.cordova.device-orientation" />
+  <gap:plugin name="org.apache.cordova.file" />
+  <gap:plugin name="org.apache.cordova.file-transfer" />
+  <gap:plugin name="org.apache.cordova.geolocation" />
+  <gap:plugin name="org.apache.cordova.globalization" />
+  <gap:plugin name="org.apache.cordova.inappbrowser" />
+  <gap:plugin name="org.apache.cordova.media" />
+  <gap:plugin name="org.apache.cordova.network-information" />
+  <gap:plugin name="org.apache.cordova.dialogs" />
+  <gap:plugin name="org.apache.cordova.splashscreen" />
+  <gap:plugin name="org.apache.cordova.vibration" />
+</widget>

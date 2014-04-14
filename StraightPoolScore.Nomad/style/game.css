@@ -1,0 +1,126 @@
+html, body {
+    margin: 0px;
+}
+
+#gameArea {
+    text-align: center;
+    width: 200px;
+}
+
+#playerArea {
+    position: relative;
+    /*border:1px solid red;*/
+    height: 100px;
+}
+
+#topButtons button {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    margin-top: -20px;
+    margin-left: -20px;
+    font-size: x-large;
+    /*border: 1px solid red;*/
+}
+
+.player {
+    width: 70px;
+    position: absolute;
+    /*border: 1px solid red;*/
+}
+
+.player-active {
+    background:green;
+}
+
+#player1 {
+    left: 0px;
+}
+
+#player2 {
+    right: 0px;
+}
+
+.playerName {
+    text-align: center;
+}
+
+.playerImage {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border: 1px solid blue;
+}
+
+.fouls {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    bottom: 0px;
+}
+
+.fouls div {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: -2px;
+    vertical-align: middle;
+    text-align: center;
+    color: silver;
+    opacity: .5;
+}
+
+.fouls-1 .foul-1 {
+    color:red;
+}
+
+.fouls-2 .foul-1, .fouls-2 .foul-2 {
+    color:red;
+}
+
+.fouls-3 .foul-1, .fouls-3 .foul-2, .fouls-3 .foul-3 {
+    color:red;
+}
+
+.playerScore {
+    text-align: center;
+}
+
+#ballsRemainingArea {
+    margin-top: 10px;
+}
+
+#ballsRemainingArea button {
+    font-size: large;
+    width: 50px;
+    height: 50px;
+}
+
+#ballsRemaining {
+    font-size: xx-large;
+    display: inline-block;
+    width: 50px;
+}
+
+#secondaryEndings {
+    margin-top: 10px;
+}
+
+#primaryEndings {
+    margin-top: 10px;
+}
+
+#primaryEndings button {
+    width: 50px;
+    height: 50px;
+}
+
+#detailsArea table {
+    width: 100%;
+}
+
+#statsArea table {
+    width: 100%;
+}

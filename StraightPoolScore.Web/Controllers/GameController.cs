@@ -78,6 +78,15 @@ namespace StraightPoolScore.Web.Controllers
         }
 
         //
+        // GET: /Game/Edit2/5
+
+        public ActionResult Edit3(int id)
+        {
+            var game = RavenSession.Load<StraightPoolGame>(id);
+            return View(game);
+        }
+
+        //
         // POST: /Game/EndTurn/5
 
         [HttpPost]
