@@ -1,0 +1,20 @@
+﻿<div id="scoringArea">
+    <div id="ballsRemainingArea">
+        <button id="ballsRemainingAdd" ng-click="inc()">+</button>
+        <div id="ballsRemaining">{{ballsRemaining}}</div>
+        <button id="ballsRemainingMinus" ng-click="dec()">-</button>
+    </div>
+
+    <div id="secondaryEndings">
+        <button id="breakingFoul" ng-click="endTurn('BreakingFoul')" ng-show="isOpeningRack">Breaking Foul</button>
+        <button id="rebreak" ng-click="endTurn('Pass')" ng-show="isAfterBreakingFoul">Pass / Re-break</button>
+        <button id="newRack" ng-click="endTurn('NewRack')">New Rack</button>
+        <button id="with15thBall" ng-click="with15thBall()" ng-show="isAfterNewRack">15th ball sunk</button>
+    </div>
+
+    <div id="primaryEndings">
+        <button id="ending-miss" ng-click="endTurn('Miss')">Miss</button>
+        <button id="ending-foul" ng-click="endTurn('Foul')">Foul</button>
+        <button id="ending-safe" ng-click="endTurn('Safety')">Safe</button>
+    </div>
+</div>

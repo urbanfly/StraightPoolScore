@@ -1,0 +1,26 @@
+﻿<div id="detailsArea">
+    <table>
+        <thead>
+            <tr>
+                <th>E</th>
+                <th>B</th>
+                <th>S</th>
+                <th>#</th>
+                <th>S</th>
+                <th>B</th>
+                <th>E</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="turn in getInnings()">
+                <td>{{turn.p1.ending}}</td>
+                <td>{{turn.p1.ballsMade}}</td>
+                <td>{{turn.p1.score}}</td>
+                <td>{{$index + 1}}</td>
+                <td>{{turn.p2.score}}</td>
+                <td>{{turn.p2.ballsMade}}</td>
+                <td>{{turn.p2.ending}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

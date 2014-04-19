@@ -53,6 +53,7 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
             game.player1 = game.player2;
             game.player2 = p1;
             game.currentPlayerId = game.player1.id;
+            $scope.currentPlayer = getCurrentPlayer();
         };
 
         $scope.undo = function () {
@@ -82,6 +83,7 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
             var turn = updateStats($scope.currentPlayer, ballsMade, endingType);
 
             game.turns.push(turn);
+            _lastInnings = null;
 
             $scope.isOpeningRack = false;
             $scope.isAfterBreakingFoul = false;
@@ -160,6 +162,7 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
                 playerId: player.id,
                 ending: ending,
                 ballsMade: ballsMade,
+                score: player.score,
             };
 
             if (ending != "NewRack") {
@@ -169,10 +172,42 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
             return turn;
         }
 
+        var _lastInnings = null;
+        $scope.getInnings = function () {
+            if (_lastInnings)
+                return _lastInnings;
+
+            var innings = [];
+            var i = {};
+            var last = null;
+            for (var n = 0; n < game.turns.length; n++)
+            {
+                var t = game.turns[n];
+
+                if (last != null && (t.playerId == last.playerId || last.playerId == game.player2.id)) {
+                    innings.push(i);
+                    i = {};
+                }
+
+                if (t.playerId == game.player1.id)
+                    i.p1 = t;
+                else
+                    i.p2 = t;
+
+                last = t;
+            }
+
+            innings.push(i);
+            _lastInnings = innings;
+            return innings;
+        };
+
         $scope.with15thBall = function () {
             $scope.isAfterNewRack = false;
             $scope.currentPlayer.score++;
-            game.turns[game.turns.length - 1].ballsMade++;
+            var lastTurn = game.turns[game.turns.length - 1];
+            lastTurn.ballsMade++;
+            lastTurn.score++;
         };
     }
 ]);

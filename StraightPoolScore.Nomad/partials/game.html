@@ -28,132 +28,19 @@
         </div>
     </div>
 
-    <div id="panelArea">
-        <input type="radio" name="visiblePanel" ng-model="visiblePanel" value="scoring" />
-        <input type="radio" name="visiblePanel" ng-model="visiblePanel" value="details" />
-        <input type="radio" name="visiblePanel" ng-model="visiblePanel" value="stats" />
+    <button ng-click="activePanel='scoring'">Scoring</button>
+    <button ng-click="activePanel='details'">Details</button>
+    <button ng-click="activePanel='stats'">Stats</button>
 
-        <div id="scoringArea">
-            <div id="ballsRemainingArea">
-                <button id="ballsRemainingAdd" ng-click="inc()">+</button>
-                <div id="ballsRemaining">{{ballsRemaining}}</div>
-                <button id="ballsRemainingMinus" ng-click="dec()">-</button>
-            </div>
-
-            <div id="secondaryEndings">
-                <button id="breakingFoul" ng-click="endTurn('BreakingFoul')" ng-show="isOpeningRack">Breaking Foul</button>
-                <button id="rebreak" ng-click="endTurn('Pass')" ng-show="isAfterBreakingFoul">Pass / Re-break</button>
-                <button id="newRack" ng-click="endTurn('NewRack')">New Rack</button>
-                <button id="with15thBall" ng-click="with15thBall()" ng-show="isAfterNewRack">15th ball sunk</button>
-            </div>
-
-            <div id="primaryEndings">
-                <button id="ending-miss" ng-click="endTurn('Miss')">Miss</button>
-                <button id="ending-foul" ng-click="endTurn('Foul')">Foul</button>
-                <button id="ending-safe" ng-click="endTurn('Safety')">Safe</button>
-            </div>
+    <div id="panelArea" ng-switch="activePanel">
+        <div ng-switch-default>
+            <div ng-include="'partials/game-scoring.html'" />
         </div>
-        <!-- TODO: Bind details -->
-        <div id="detailsArea" ng-show="visiblePanel=='details'">
-            <table>
-                <thead>
-                    <tr>
-                        <th>E</th>
-                        <th>B</th>
-                        <th>S</th>
-                        <th>#</th>
-                        <th>S</th>
-                        <th>B</th>
-                        <th>E</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>0</td>
-                        <td>BF</td>
-                        <td>-2</td>
-                        <td>1</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>0</td>
-                        <td>S</td>
-                        <td>-2</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>M</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>M</td>
-                        <td>1</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>F</td>
-                        <td>1</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div ng-switch-when="details">
+            <div ng-include="'partials/game-details.html'" />
         </div>
-        <!-- TODO: Bind stats -->
-        <div id="statsArea" ng-show="visiblePanel=='stats'">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="3">Metric</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>88</td>
-                        <td>Total Balls</td>
-                        <td>68</td>
-                    </tr>
-                    <tr>
-                        <td>0</td>
-                        <td>Handicap</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>High Run</td>
-                        <td>10</td>
-                    </tr>
-                    <tr>
-                        <td>2.2</td>
-                        <td>Avg. Run</td>
-                        <td>2.0</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Total Fouls</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>8</td>
-                        <td>Total Safes</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>6</td>
-                        <td>Successful Safes</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Balls b/w Errors</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td>Std. Dev. Run</td>
-                        <td>9</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div ng-switch-when="stats">
+            <div ng-include="'partials/game-stats.html'" />
         </div>
     </div>
 </div>

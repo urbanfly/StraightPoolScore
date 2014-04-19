@@ -44,6 +44,15 @@
     <Content Include="partials\findGame.html">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="partials\game-details.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\game-scoring.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="partials\game-stats.html">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="partials\game.html">
       <SubType>Content</SubType>
     </Content>
