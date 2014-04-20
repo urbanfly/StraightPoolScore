@@ -6,50 +6,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>88</td>
-                <td>Total Balls</td>
-                <td>68</td>
-            </tr>
-            <tr>
-                <td>0</td>
-                <td>Handicap</td>
-                <td>20</td>
-            </tr>
-            <tr>
-                <td>10</td>
-                <td>High Run</td>
-                <td>10</td>
-            </tr>
-            <tr>
-                <td>2.2</td>
-                <td>Avg. Run</td>
-                <td>2.0</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Total Fouls</td>
-                <td>3</td>
-            </tr>
-            <tr>
-                <td>8</td>
-                <td>Total Safes</td>
-                <td>5</td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>Successful Safes</td>
-                <td>4</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Balls b/w Errors</td>
-                <td>4</td>
-            </tr>
-            <tr>
-                <td>9</td>
-                <td>Std. Dev. Run</td>
-                <td>9</td>
+            <tr ng-repeat="stat in getStats()">
+                <td>{{stat.p1}}</td>
+                <td>{{stat.name}}</td>
+                <td>{{stat.p2}}</td>
             </tr>
         </tbody>
     </table>

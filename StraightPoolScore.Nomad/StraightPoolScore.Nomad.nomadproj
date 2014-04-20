@@ -95,6 +95,48 @@
     <Content Include="scripts\controllers.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="scripts\rx.aggregates.d.ts">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.aggregates.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.aggregates.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.binding.d.ts">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.binding.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.binding.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.coincidence.d.ts">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.coincidence.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.coincidence.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.compat.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.compat.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.d.ts">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\rx.min.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="scripts\services.js">
       <SubType>Content</SubType>
     </Content>

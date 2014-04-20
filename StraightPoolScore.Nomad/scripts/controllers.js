@@ -1,4 +1,10 @@
-﻿var spsControllers = angular.module("spsControllers", []);
+﻿/// <reference path="rx.js" />
+/// <reference path="angular.js" />
+/// <reference path="rx.aggregates.js" />
+/// <reference path="rx.coincidence.js" />
+/// <reference path="rx.binding.js" />
+
+var spsControllers = angular.module("spsControllers", []);
 
 spsControllers.controller("homeCtrl", ["$scope",
     function ($scope) {
@@ -84,6 +90,7 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
 
             game.turns.push(turn);
             _lastInnings = null;
+            _lastStats = null;
 
             $scope.isOpeningRack = false;
             $scope.isAfterBreakingFoul = false;
@@ -200,6 +207,101 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
             innings.push(i);
             _lastInnings = innings;
             return innings;
+        };
+
+        var _lastStats = null;
+        $scope.getStats = function () {
+            if (_lastStats)
+                return _lastStats;
+
+            function getRuns(player, turns)
+            {
+                var pturns = turns.select(function (t) { return t.playerId; }).distinctUntilChanged().publish();
+                var opening = pturns.where(function (p) { return p == player.id; });
+                var closing = function (w) { return pturns.firstOrDefault(function (p) { return w != p; }, 0); };
+                pturns.connect();
+                return turns.window(opening, closing)
+                    .selectMany(function (w) {
+                        return w.sum(function (t) {
+                            return t.ballsMade;
+                        });
+                    })
+                    .defaultIfEmpty(0);
+            }
+
+            var stats = [
+                {
+                    name:"Total Balls",
+                    func: function (player, turns) {
+                        return turns.where(function (t) { return t.playerId == player.id; })
+                            .sum(function (t) { return t.ballsMade; });
+                    }
+                },
+                //{
+                //    name:"Handicap",
+                //    func:function (player, turns) { return Rx.Observable.return(0); }
+                //},
+                {
+                    name:"High Run",
+                    func: function (player, turns) {
+                        return getRuns(player, turns).max();
+                    },
+                },
+                {
+                    name:"Avg. Run",
+                    func: function (player, turns) {
+                        return getRuns(player, turns).average();
+                    },
+                },
+                {
+                    name:"Total Fouls",
+                    func: function (player, turns) { return Rx.Observable.return(player.totalFouls); },
+                },
+                {
+                    name:"Total Safes",
+                    func: function (player, turns) { return Rx.Observable.return(player.totalSafeties); },
+                },
+                {
+                    name:"Effective Safes",
+                    func: function (player, turns) {
+                        return turns.zip(turns.skip(1), function (x, y) { return { x: x, y: y }; })
+                            .where(function (pair) { return pair.x.playerId == player.id && pair.x.ending == "Safety" && pair.y.ballsMade == 0; })
+                            .count();
+                    },
+                },
+                //{
+                //    name:"Balls b/w Errors",
+                //    func: function (player, turns) { return Rx.Observable.return(0); },
+                //},
+                {
+                    name:"StdDev Run",
+                    func: function (player, turns) {
+                        return getRuns(player, turns).average()
+                            .selectMany(function (mean) {
+                                return getRuns(player, turns).select(function (r) {
+                                    return Math.pow(r - mean, 2);
+                                })
+                                    .average()
+                                    .select(function (mean2) {
+                                        return Math.sqrt(mean2);
+                                    })
+                        });
+                    },
+                },
+            ];
+
+            var turns = Rx.Observable.fromArray(game.turns);
+
+            _lastStats = [];
+            Rx.Observable.fromArray(stats)
+                .select(function (s) {
+                    var result = {name:s.name};
+                    s.func(game.player1, turns).subscribe(function (r) { result.p1 = r; });
+                    s.func(game.player2, turns).subscribe(function (r) { result.p2 = r; });
+                    return result;
+                }).subscribe(function (s) { _lastStats.push(s); });
+
+            return _lastStats;
         };
 
         $scope.with15thBall = function () {
