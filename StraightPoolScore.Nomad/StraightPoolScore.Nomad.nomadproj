@@ -65,6 +65,15 @@
     <Content Include="scripts\angular-mocks.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="scripts\angular-resource.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-resource.min.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="scripts\angular-resource.min.js.map">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="scripts\angular-route.js">
       <SubType>Content</SubType>
     </Content>

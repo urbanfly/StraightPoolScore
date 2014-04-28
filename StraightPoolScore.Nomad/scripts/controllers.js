@@ -25,8 +25,8 @@ spsControllers.controller("findGameCtrl", ["$scope",
 
 // TODO: update the "active" mechanism
 
-spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
-    function ($scope, $routeParams, $games) {        
+spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games", "$filter",
+    function ($scope, $routeParams, $games, $filter) {        
         var game = $games.load($routeParams.gameId);
         initializeScope(game);
 
@@ -119,6 +119,7 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
                 case "NewRack":
                     $scope.isAfterNewRack = true;
                     game.ballsRemaining = 15;
+                    game.rackCount++;
                     break;
             }
 
@@ -214,20 +215,61 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
             if (_lastStats)
                 return _lastStats;
 
-            function getRuns(player, turns)
-            {
-                var pturns = turns.select(function (t) { return t.playerId; }).distinctUntilChanged().publish();
-                var opening = pturns.where(function (p) { return p == player.id; });
-                var closing = function (w) { return pturns.firstOrDefault(function (p) { return w != p; }, 0); };
-                pturns.connect();
-                return turns.window(opening, closing)
-                    .selectMany(function (w) {
-                        return w.sum(function (t) {
-                            return t.ballsMade;
+            function getRuns(turns, player) {
+                var playerChanges = turns.select(function (t) { return t.playerId; }).distinctUntilChanged();
+
+                var runs = turns.groupByUntil(function (t) { return t.playerId; }, null, function (g) { return playerChanges.skip(1); })
+                    .selectMany(function (g) {
+                        return g.aggregate(function (acc, t) {
+                            return {
+                                playerId: t.playerId,
+                                ballsMade: t.ballsMade + acc.ballsMade,
+                                ending: t.ending,
+                            };
                         });
-                    })
-                    .defaultIfEmpty(0);
+                    });
+
+                if (player)
+                {
+                    runs = runs.where(function (r) { return r.playerId == player.id; })
+                        .defaultIfEmpty({ playerId: player.Id, ballsMade: 0 });
+                }
+
+                return runs;
             }
+
+            //function getEffectiveRuns(turns, player) {
+            //    var runs = getRuns(turns).publish();
+
+            //    var effRuns = runs.groupByUntil(
+            //        function (r) { return r.playerId; },
+            //        null,
+            //        function (g) {
+            //            return runs.skipWhile(function (r) {
+            //                return (r.playerId == g.key && r.ending == "Safety") || (r.playerId != g.key && r.ballsMade == 0);
+            //            });
+            //        })
+            //        .selectMany(function (g) {
+            //            g.toArray().subscribe(function (x) { console.info(g.key); console.info(x); });
+            //            return g.aggregate(function (acc, t) {
+            //                return {
+            //                    playerId: t.playerId,
+            //                    ballsMade: t.ballsMade + acc.ballsMade,
+            //                    ending: t.ending,
+            //                };
+            //            });
+            //        });
+
+            //    if (player) {
+            //        effRuns = effRuns
+            //            .where(function (r) { return r.playerId == player.id; })
+            //            .defaultIfEmpty({ playerId: player.Id, ballsMade: 0 });
+            //    }
+
+            //    runs.connect();
+
+            //    return effRuns;
+            //}
 
             var stats = [
                 {
@@ -235,31 +277,53 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
                     func: function (player, turns) {
                         return turns.where(function (t) { return t.playerId == player.id; })
                             .sum(function (t) { return t.ballsMade; });
-                    }
+                    },
+                    round: 0,
                 },
-                //{
-                //    name:"Handicap",
-                //    func:function (player, turns) { return Rx.Observable.return(0); }
-                //},
                 {
                     name:"High Run",
                     func: function (player, turns) {
-                        return getRuns(player, turns).max();
+                        return getRuns(turns, player)
+                            .select(function (r) { return r.ballsMade; })
+                            .max();
                     },
+                    round: 0,
                 },
                 {
                     name:"Avg. Run",
                     func: function (player, turns) {
-                        return getRuns(player, turns).average();
+                        return getRuns(turns, player)
+                            .select(function (r) { return r.ballsMade; })
+                            .average();
                     },
+                    round: 2,
+                },
+                {
+                    name: "StdDev Run",
+                    func: function (player, turns) {
+                        var runs = getRuns(turns, player).select(function (r) { return r.ballsMade; });
+                        return runs.average()
+                            .selectMany(function (mean) {
+                                return runs.select(function (r) {
+                                    return Math.pow(r - mean, 2);
+                                })
+                                    .average()
+                                    .select(function (mean2) {
+                                        return Math.sqrt(mean2);
+                                    })
+                            });
+                    },
+                    round: 2,
                 },
                 {
                     name:"Total Fouls",
                     func: function (player, turns) { return Rx.Observable.return(player.totalFouls); },
+                    round: 0,
                 },
                 {
                     name:"Total Safes",
                     func: function (player, turns) { return Rx.Observable.return(player.totalSafeties); },
+                    round: 0,
                 },
                 {
                     name:"Effective Safes",
@@ -268,26 +332,43 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
                             .where(function (pair) { return pair.x.playerId == player.id && pair.x.ending == "Safety" && pair.y.ballsMade == 0; })
                             .count();
                     },
+                    round: 0,
                 },
                 //{
-                //    name:"Balls b/w Errors",
-                //    func: function (player, turns) { return Rx.Observable.return(0); },
+                //    name: "Eff. High Run",
+                //    func: function (player, turns) {
+                //        return getEffectiveRuns(turns, player)
+                //            .select(function (r) { return r.ballsMade; })
+                //            .max();
+                //    },
+                //    round: 0,
                 //},
-                {
-                    name:"StdDev Run",
-                    func: function (player, turns) {
-                        return getRuns(player, turns).average()
-                            .selectMany(function (mean) {
-                                return getRuns(player, turns).select(function (r) {
-                                    return Math.pow(r - mean, 2);
-                                })
-                                    .average()
-                                    .select(function (mean2) {
-                                        return Math.sqrt(mean2);
-                                    })
-                        });
-                    },
-                },
+                //{
+                //    name: "Eff. Avg. Run",
+                //    func: function (player, turns) {
+                //        return getEffectiveRuns(turns, player)
+                //            .select(function (r) { return r.ballsMade; })
+                //            .average();
+                //    },
+                //    round: 2,
+                //},
+                //{
+                //    name: "Eff. StdDev Run",
+                //    func: function (player, turns) {
+                //        var runs = getEffectiveRuns(turns, player).select(function (r) { return r.ballsMade; });
+                //        return getEffectiveRuns(turns, player).select(function (r) { return r.ballsMade; }).average()
+                //            .selectMany(function (mean) {
+                //                return getEffectiveRuns(turns, player).select(function (r) { return r.ballsMade; }).select(function (r) {
+                //                    return Math.pow(r - mean, 2);
+                //                })
+                //                    .average()
+                //                    .select(function (mean2) {
+                //                        return Math.sqrt(mean2);
+                //                    })
+                //            });
+                //    },
+                //    round: 2,
+                //},
             ];
 
             var turns = Rx.Observable.fromArray(game.turns);
@@ -296,8 +377,12 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games",
             Rx.Observable.fromArray(stats)
                 .select(function (s) {
                     var result = {name:s.name};
-                    s.func(game.player1, turns).subscribe(function (r) { result.p1 = r; });
-                    s.func(game.player2, turns).subscribe(function (r) { result.p2 = r; });
+                    s.func(game.player1, turns).subscribe(function (r) {
+                        result.p1 = $filter("number")(r, s.round || 0);
+                    });
+                    s.func(game.player2, turns).subscribe(function (r) {
+                        result.p2 = $filter("number")(r, s.round || 0);
+                    });
                     return result;
                 }).subscribe(function (s) { _lastStats.push(s); });
 
