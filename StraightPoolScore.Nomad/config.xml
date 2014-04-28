@@ -6,23 +6,41 @@
   <author email="urbanfly@gmail.com">urbanfly@gmail.com</author>
   <access origin="*" />
   <preference name="phonegap-version" value="3.3.0" />
-  <gap:plugin name="com.auth0.sdk" />
-  <gap:plugin name="org.apache.cordova.battery-status" />
-  <gap:plugin name="org.apache.cordova.camera" />
-  <gap:plugin name="org.apache.cordova.media-capture" />
-  <gap:plugin name="org.apache.cordova.console" />
-  <gap:plugin name="org.apache.cordova.contacts" />
-  <gap:plugin name="org.apache.cordova.device" />
-  <gap:plugin name="org.apache.cordova.device-motion" />
-  <gap:plugin name="org.apache.cordova.device-orientation" />
-  <gap:plugin name="org.apache.cordova.file" />
-  <gap:plugin name="org.apache.cordova.file-transfer" />
-  <gap:plugin name="org.apache.cordova.geolocation" />
-  <gap:plugin name="org.apache.cordova.globalization" />
-  <gap:plugin name="org.apache.cordova.inappbrowser" />
-  <gap:plugin name="org.apache.cordova.media" />
-  <gap:plugin name="org.apache.cordova.network-information" />
-  <gap:plugin name="org.apache.cordova.dialogs" />
+
+  <!--
+    com.auth0.sdk  -  to enable social logins
+    splashscreen  - to enhance the startup UX
+    console - to improve calls to console.log
+    contacts  - to enable player selection from local contacts
+    device-orientation  - to detect portrait/landscape modes
+    geolocation - to detect location
+    vibration - to alert players when "on 2 fouls"
+    inappbrowser  - to show game rules in-app
+    dialogs - to alert players when "on 2 fouls"
+  <gap:plugin name="com.auth0.sdk" /> 
   <gap:plugin name="org.apache.cordova.splashscreen" />
+  <gap:plugin name="org.apache.cordova.console" />
+  <gap:plugin name="org.apache.cordova.network-information" />
+  <gap:plugin name="org.apache.cordova.contacts" />
+  <gap:plugin name="org.apache.cordova.device-orientation" />
+  <gap:plugin name="org.apache.cordova.geolocation" />
   <gap:plugin name="org.apache.cordova.vibration" />
+  <gap:plugin name="org.apache.cordova.inappbrowser" />
+  <gap:plugin name="org.apache.cordova.dialogs" />
+  -->
+
+  <!--
+  to disable screen-lock with low battery
+  <gap:plugin name="org.apache.cordova.battery-status" />
+  to get device info
+  <gap:plugin name="org.apache.cordova.device" />
+  accelerometer
+  <gap:plugin name="org.apache.cordova.device-motion" />
+  to use HTML5 storage
+  <gap:plugin name="org.apache.cordova.file" />
+  to upload/download files
+  <gap:plugin name="org.apache.cordova.file-transfer" />
+  to format dates, currency, etc
+  <gap:plugin name="org.apache.cordova.globalization" />
+  -->
 </widget>
