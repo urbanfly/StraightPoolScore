@@ -1,4 +1,4 @@
-﻿/// <reference path="rx.js" />
+/// <reference path="rx.js" />
 /// <reference path="angular.js" />
 /// <reference path="rx.aggregates.js" />
 /// <reference path="rx.coincidence.js" />
@@ -115,6 +115,7 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games", "
                 case "ThreeConsecutiveFouls":
                     $scope.isOpeningRack = true;
                     game.ballsRemaining = 15;
+                    explain3Fouls();
                     break;
                 case "NewRack":
                     $scope.isAfterNewRack = true;
@@ -126,9 +127,26 @@ spsControllers.controller("viewGameCtrl", ["$scope", "$routeParams", "$games", "
             $scope.ballsRemaining = game.ballsRemaining;
 
             //game.$save();
+            
+            warnOn2Fouls();
 
             return turn;
         };
+
+        function warnOn2Fouls()
+        {
+            window.setTimeout(function(){
+                if ($scope.currentPlayer.consecutiveFouls == 2)
+                {
+                    alert("Player on 2 fouls!");
+                }
+            }, 100);
+        }
+
+        function explain3Fouls()
+        {
+            alert("Three consecutive fouls!\n- 15 point penalty\n- re-rack all 15 balls\n- fouling player breaks under opening break rules");
+        }
 
         function updateStats(player, ballsMade, ending)
         {
